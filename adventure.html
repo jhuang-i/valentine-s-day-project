@@ -1,1 +1,623 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine's Quest | The Journey to You</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(
+        180deg,
+        #12102d,
+        #302451,
+        #79528b
+    );
+    color: #ffe4f1;
+    font-family: 'Press Start 2P', monospace;
+    text-align: center;
+    padding: 25px 12px;
+    overflow-x: hidden;
+}
+
+h1 {
+    color: #ff9bc5;
+    font-size: clamp(13px, 3vw, 21px);
+    line-height: 2;
+    text-shadow: 0 0 15px #d967ac;
+}
+
+.subtitle {
+    font-size: 9px;
+    line-height: 2.5;
+    color: #e6c9f5;
+}
+
+#stars {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.star {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #fff0bd;
+    box-shadow: 0 0 9px #ffe6a0;
+    animation: twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle {
+    from { opacity: 0.2; }
+    to { opacity: 1; }
+}
+
+.game-container {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 20px auto;
+}
+
+.hud {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 10px;
+    color: #ffb6d2;
+    padding: 15px;
+    background: #241c40;
+    border: 3px solid #a989db;
+}
+
+.game-area {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    min-height: 230px;
+    background: linear-gradient(
+        #252043 0%,
+        #3b315e 60%,
+        #55416c 100%
+    );
+    border: 5px solid #ff8fb9;
+    box-shadow: 8px 8px 0 #49346e;
+    overflow: hidden;
+    margin-top: 15px;
+}
+
+.game-area::before {
+    content: "✦  ·  ✧  ·  ✦  ·  ✧  ·  ✦";
+    position: absolute;
+    top: 15%;
+    left: 0;
+    width: 100%;
+    color: #fff0bd;
+    opacity: 0.5;
+    font-size: 14px;
+    pointer-events: none;
+}
+
+.moon {
+    position: absolute;
+    right: 9%;
+    top: 8%;
+    font-size: 45px;
+    color: #ffe4a8;
+    text-shadow: 0 0 25px #ffe4a8;
+    pointer-events: none;
+}
+
+.ground {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 25%;
+    background: #55416c;
+    border-top: 4px solid #8766a2;
+    pointer-events: none;
+}
+
+.flower {
+    position: absolute;
+    color: #ffc4df;
+    font-size: 15px;
+    pointer-events: none;
+}
+
+/* Pixel-style cat sprites */
+.cat {
+    position: absolute;
+    width: 40px;
+    height: 42px;
+    z-index: 5;
+    image-rendering: pixelated;
+    filter: drop-shadow(3px 4px 0 #21172f);
+}
+
+.cat .ears {
+    position: absolute;
+    top: 0;
+    left: 5px;
+    width: 30px;
+    height: 13px;
+    background: linear-gradient(
+        90deg,
+        var(--fur) 0 25%,
+        transparent 25% 75%,
+        var(--fur) 75%
+    );
+}
+
+.cat .face {
+    position: absolute;
+    top: 9px;
+    left: 2px;
+    width: 36px;
+    height: 30px;
+    background: var(--fur);
+    border: 3px solid #292039;
+    border-radius: 4px;
+}
+
+.cat .eyes {
+    position: absolute;
+    top: 9px;
+    left: 7px;
+    width: 17px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cat .eyes::before,
+.cat .eyes::after {
+    content: "";
+    width: 4px;
+    height: 6px;
+    background: #292039;
+}
+
+.cat .nose {
+    position: absolute;
+    top: 18px;
+    left: 14px;
+    width: 5px;
+    height: 4px;
+    background: #f078a7;
+}
+
+#player {
+    --fur: #f7afc9;
+}
+
+#valentine {
+    --fur: #ffe2ae;
+    display: none;
+    animation: catBounce 1.5s infinite;
+}
+
+@keyframes catBounce {
+    50% { transform: translateY(-5px); }
+}
+
+/* Collectible hearts */
+.heart {
+    position: absolute;
+    z-index: 3;
+    font-size: clamp(18px, 4vw, 26px);
+    filter: drop-shadow(0 0 9px #ff8fb9);
+    animation: heartFloat 1.5s infinite alternate;
+    pointer-events: none;
+}
+
+@keyframes heartFloat {
+    to { transform: translateY(-7px); }
+}
+
+/* Dialogue */
+.dialogue {
+    margin-top: 20px;
+    padding: 20px 15px;
+    min-height: 95px;
+    background: #241c40;
+    border: 3px solid #a989db;
+    font-size: 10px;
+    line-height: 2.5;
+    color: #ffe4f1;
+}
+
+/* Controls */
+.controls {
+    margin: 20px auto;
+    display: grid;
+    grid-template-columns: repeat(3, 55px);
+    gap: 7px;
+    justify-content: center;
+}
+
+.controls button {
+    height: 50px;
+    touch-action: none;
+}
+
+button {
+    font-family: inherit;
+    font-size: 11px;
+    background: #e76c9e;
+    border: 3px solid #ffb6d2;
+    color: white;
+    box-shadow: 3px 3px 0 #7b426e;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #ff8fb9;
+}
+
+button:active {
+    transform: translate(2px, 2px);
+}
+
+.empty {
+    visibility: hidden;
+}
+
+#continueBtn {
+    display: none;
+    margin: 15px auto;
+    padding: 18px;
+    line-height: 2;
+}
+
+#celebration {
+    display: none;
+    color: #ffb6d2;
+    font-size: 13px;
+    line-height: 2.5;
+    animation: catBounce 1.5s infinite;
+}
+
+.instructions {
+    font-size: 8px;
+    line-height: 2.5;
+    color: #d8b9ed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation: none !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="stars"></div>
+
+<h1>♡ THE JOURNEY TO YOU ♡</h1>
+
+<p class="subtitle">
+    A little adventure beneath a million stars...
+</p>
+
+<div class="game-container">
+
+    <div class="hud">
+        <span>LEVEL 01</span>
+        <span>💗 <span id="score">0</span> / 5</span>
+    </div>
+
+    <div class="game-area" id="game">
+
+        <div class="moon">☾</div>
+        <div class="ground"></div>
+
+        <!-- Player cat -->
+        <div class="cat" id="player">
+            <div class="ears"></div>
+            <div class="face">
+                <div class="eyes"></div>
+                <div class="nose"></div>
+            </div>
+        </div>
+
+        <!-- Valentine cat -->
+        <div class="cat" id="valentine">
+            <div class="ears"></div>
+            <div class="face">
+                <div class="eyes"></div>
+                <div class="nose"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="dialogue" id="dialogue">
+        Collect five glowing hearts scattered
+        beneath the stars. Someone special is waiting... ♡
+    </div>
+
+    <div id="celebration">
+        ♡ QUEST COMPLETE ♡
+    </div>
+
+    <button id="continueBtn" onclick="continueQuest()">
+        CONTINUE TO YOUR VALENTINE ♡
+    </button>
+
+    <div class="controls" id="controls">
+        <span class="empty"></span>
+        <button data-direction="up">▲</button>
+        <span class="empty"></span>
+
+        <button data-direction="left">◀</button>
+        <button data-direction="down">▼</button>
+        <button data-direction="right">▶</button>
+    </div>
+
+    <p class="instructions">
+        MOVE WITH WASD, ARROW KEYS,
+        OR THE BUTTONS ABOVE
+    </p>
+
+</div>
+
+<script>
+const game = document.getElementById("game");
+const player = document.getElementById("player");
+const valentine = document.getElementById("valentine");
+const dialogue = document.getElementById("dialogue");
+const scoreDisplay = document.getElementById("score");
+
+let x = 0.08;
+let y = 0.55;
+let score = 0;
+let finished = false;
+let hearts = [];
+
+// Create background stars
+const stars = document.getElementById("stars");
+
+for (let i = 0; i < 90; i++) {
+    const star = document.createElement("div");
+    star.className = "star";
+
+    star.style.left = Math.random() * 100 + "%";
+    star.style.top = Math.random() * 100 + "%";
+    star.style.animationDelay = Math.random() * 3 + "s";
+
+    stars.appendChild(star);
+}
+
+// Flower decorations
+const flowers = [
+    [8, 88], [20, 80], [35, 91],
+    [54, 85], [72, 92], [89, 82]
+];
+
+flowers.forEach(function(pos) {
+    const flower = document.createElement("div");
+    flower.className = "flower";
+    flower.textContent = "✿";
+    flower.style.left = pos[0] + "%";
+    flower.style.top = pos[1] + "%";
+    game.appendChild(flower);
+});
+
+// Hearts use proportional coordinates
+const heartPositions = [
+    [0.20, 0.22],
+    [0.43, 0.35],
+    [0.72, 0.18],
+    [0.30, 0.73],
+    [0.79, 0.72]
+];
+
+heartPositions.forEach(function(pos) {
+    const heart = document.createElement("div");
+
+    heart.className = "heart";
+    heart.textContent = "💗";
+
+    heart.style.left = pos[0] * 100 + "%";
+    heart.style.top = pos[1] * 100 + "%";
+
+    game.appendChild(heart);
+    hearts.push(heart);
+});
+
+// Position the player
+function updatePlayer() {
+    const maxX = Math.max(0, game.clientWidth - player.offsetWidth);
+    const maxY = Math.max(0, game.clientHeight - player.offsetHeight);
+
+    player.style.left = x * maxX + "px";
+    player.style.top = y * maxY + "px";
+}
+
+updatePlayer();
+
+// Move the cat
+function move(direction) {
+    if (finished) return;
+
+    const step = 12;
+    const maxX = Math.max(1, game.clientWidth - player.offsetWidth);
+    const maxY = Math.max(1, game.clientHeight - player.offsetHeight);
+
+    if (direction === "left") x -= step / maxX;
+    if (direction === "right") x += step / maxX;
+    if (direction === "up") y -= step / maxY;
+    if (direction === "down") y += step / maxY;
+
+    x = Math.max(0, Math.min(1, x));
+    y = Math.max(0, Math.min(1, y));
+
+    updatePlayer();
+    checkHearts();
+    checkValentine();
+}
+
+// Keyboard controls
+document.addEventListener("keydown", function(event) {
+    const keys = {
+        arrowup: "up",
+        w: "up",
+        arrowdown: "down",
+        s: "down",
+        arrowleft: "left",
+        a: "left",
+        arrowright: "right",
+        d: "right"
+    };
+
+    const direction = keys[event.key.toLowerCase()];
+
+    if (direction) {
+        event.preventDefault();
+        move(direction);
+    }
+});
+
+// Touchscreen button controls
+document.querySelectorAll("[data-direction]").forEach(function(button) {
+    let holdInterval = null;
+
+    button.addEventListener("pointerdown", function(event) {
+        event.preventDefault();
+        const direction = button.dataset.direction;
+
+        move(direction);
+        clearInterval(holdInterval);
+        holdInterval = setInterval(function() {
+            move(direction);
+        }, 75);
+    });
+
+    function stopMoving() {
+        clearInterval(holdInterval);
+        holdInterval = null;
+    }
+
+    button.addEventListener("pointerup", stopMoving);
+    button.addEventListener("pointercancel", stopMoving);
+    button.addEventListener("lostpointercapture", stopMoving);
+    button.addEventListener("pointerleave", stopMoving);
+});
+
+// Detect overlap between objects
+function touching(first, second) {
+    const a = first.getBoundingClientRect();
+    const b = second.getBoundingClientRect();
+
+    return (
+        a.left < b.right &&
+        a.right > b.left &&
+        a.top < b.bottom &&
+        a.bottom > b.top
+    );
+}
+
+// Collect hearts
+function checkHearts() {
+    hearts.forEach(function(heart) {
+        if (!heart.isConnected) return;
+
+        if (touching(player, heart)) {
+            heart.remove();
+            score++;
+            scoreDisplay.textContent = score;
+
+            const messages = [
+                "One little heart, one little wish... ♡",
+                "The stars are guiding you closer! ✨",
+                "Someone is waiting beneath the moon...",
+                "Your heart is almost complete! 💗",
+                "All five hearts collected! Find the other cat! 🐈"
+            ];
+
+            dialogue.textContent = messages[score - 1];
+
+            if (score === 5) {
+                revealValentine();
+            }
+        }
+    });
+}
+
+// Reveal the second cat
+function revealValentine() {
+    valentine.style.display = "block";
+    valentine.style.left = "85%";
+    valentine.style.top = "48%";
+
+    dialogue.textContent =
+        "You've collected every heart! Now find the kitty waiting for you. ♡";
+}
+
+// Check if the cats meet
+function checkValentine() {
+    if (score < 5 || finished) return;
+
+    if (touching(player, valentine)) {
+        finished = true;
+
+        dialogue.textContent =
+            "Of all the stars in the sky, you're the one I'd choose. ♡";
+
+        document.getElementById("celebration").style.display = "block";
+        document.getElementById("continueBtn").style.display = "block";
+        document.getElementById("controls").style.display = "none";
+
+        createCelebration();
+    }
+}
+
+// Celebrate with floating hearts
+function createCelebration() {
+    for (let i = 0; i < 30; i++) {
+        setTimeout(function() {
+            const heart = document.createElement("div");
+
+            heart.textContent = "💗";
+            heart.style.position = "absolute";
+            heart.style.left = Math.random() * 90 + "%";
+            heart.style.top = Math.random() * 85 + "%";
+            heart.style.fontSize = "20px";
+            heart.style.pointerEvents = "none";
+            heart.style.zIndex = "6";
+            heart.style.filter = "drop-shadow(0 0 10px pink)";
+
+            game.appendChild(heart);
+
+            setTimeout(function() {
+                heart.remove();
+            }, 2500);
+        }, i * 80);
+    }
+}
+
+// Continue to the original Valentine website
+function continueQuest() {
+    window.location.href = "index.html";
+}
+
+// Keep cat position correct on resize
+window.addEventListener("resize", updatePlayer);
+</script>
+
+</body>
+</html>
+
