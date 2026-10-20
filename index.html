@@ -415,6 +415,25 @@ function restart() {
     hideButtons();
     document.getElementById("startButtons").classList.remove("hidden");
 }
+
+
+// Check whether the player finished the cat adventure
+if (sessionStorage.getItem("valentineQuestComplete") === "yes") {
+
+    // Clear the completion status
+    sessionStorage.removeItem("valentineQuestComplete");
+
+    // Show the Valentine's question
+    message.textContent =
+        "You found your way to me beneath a million stars... ♡ " +
+        "Will you be my Valentine?";
+
+    hideButtons();
+
+    document.getElementById("questionButtons")
+        .classList.remove("hidden");
+}
+
 </script>
 
 </body>
