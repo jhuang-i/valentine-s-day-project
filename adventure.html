@@ -609,8 +609,12 @@ function createCelebration() {
     }
 }
 
-// Continue to the original Valentine website
+
 function continueQuest() {
+    // Remember that the player completed the adventure
+    sessionStorage.setItem("valentineQuestComplete", "yes");
+
+    // Return to the Valentine's website
     window.location.href = "index.html";
 }
 
