@@ -1,0 +1,420 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine's Quest ♡</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: linear-gradient(#17132f, #49346e, #8b65a5);
+    color: #ffe4f1;
+    font-family: 'Press Start 2P', monospace;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    text-align: center;
+    padding: 18px;
+}
+
+#stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.star {
+    position: absolute;
+    background: #ffe4a8;
+    width: 3px;
+    height: 3px;
+    box-shadow: 0 0 8px #fff0bb;
+    animation: twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle {
+    from { opacity: 0.2; }
+    to { opacity: 1; }
+}
+
+.game {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 650px;
+    padding: 25px 18px;
+    border: 4px solid #ff8fb9;
+    background: rgba(23, 19, 47, 0.92);
+    box-shadow: 8px 8px 0 #a989db;
+}
+
+h1 {
+    color: #ff9bc5;
+    font-size: clamp(13px, 3vw, 19px);
+    line-height: 2;
+}
+
+p {
+    font-size: 10px;
+    line-height: 2.4;
+}
+
+.moon {
+    font-size: 55px;
+    filter: drop-shadow(0 0 15px #ffe4a8);
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    50% { transform: translateY(-8px); }
+}
+
+.cat-scene {
+    position: relative;
+    height: 190px;
+    margin: 15px auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 25px;
+    border-bottom: 12px solid #554071;
+}
+
+/* Pixel-art cats made with CSS */
+.cat {
+    position: relative;
+    width: 85px;
+    height: 105px;
+    animation: breathe 2s infinite alternate;
+}
+
+@keyframes breathe {
+    to { transform: translateY(-4px); }
+}
+
+.cat-body {
+    position: absolute;
+    bottom: 0;
+    left: 12px;
+    width: 62px;
+    height: 65px;
+    background: var(--fur);
+    border: 4px solid #292039;
+    border-radius: 8px 8px 3px 3px;
+}
+
+.cat-head {
+    position: absolute;
+    top: 0;
+    left: 2px;
+    width: 82px;
+    height: 65px;
+    background: var(--fur);
+    border: 4px solid #292039;
+    border-radius: 5px;
+    z-index: 2;
+}
+
+.ear {
+    position: absolute;
+    top: -19px;
+    width: 25px;
+    height: 25px;
+    background: var(--fur);
+    border: 4px solid #292039;
+}
+
+.ear.left { left: 5px; }
+.ear.right { right: 5px; }
+
+.eye {
+    position: absolute;
+    top: 27px;
+    width: 7px;
+    height: 9px;
+    background: #292039;
+}
+
+.eye.left { left: 19px; }
+.eye.right { right: 19px; }
+
+.nose {
+    position: absolute;
+    top: 39px;
+    left: 34px;
+    width: 8px;
+    height: 5px;
+    background: #ff8fb9;
+}
+
+.cheek {
+    position: absolute;
+    top: 40px;
+    width: 13px;
+    height: 6px;
+    background: #ff9bc5;
+    opacity: 0.8;
+}
+
+.cheek.left { left: 8px; }
+.cheek.right { right: 8px; }
+
+.tail {
+    position: absolute;
+    bottom: 9px;
+    right: -13px;
+    width: 25px;
+    height: 45px;
+    border: 10px solid var(--fur);
+    border-left: none;
+    border-radius: 0 25px 25px 0;
+    transform-origin: bottom left;
+    animation: wag 2s ease-in-out infinite alternate;
+}
+
+@keyframes wag {
+    to { transform: rotate(12deg); }
+}
+
+.cat.pink { --fur: #f7afc9; }
+.cat.cream { --fur: #ffe2ae; }
+
+.love-heart {
+    position: absolute;
+    top: 0;
+    font-size: 35px;
+    color: #ff8fb9;
+    filter: drop-shadow(0 0 10px #ff8fb9);
+    animation: float 2s infinite;
+}
+
+.dialogue {
+    border: 3px solid #a989db;
+    background: #292044;
+    padding: 18px 12px;
+    min-height: 90px;
+    margin: 20px 0;
+}
+
+button {
+    font-family: inherit;
+    font-size: 10px;
+    padding: 14px 17px;
+    margin: 6px;
+    cursor: pointer;
+    color: white;
+    background: #e76c9e;
+    border: 3px solid #ffb6d2;
+    box-shadow: 4px 4px 0 #7b426e;
+    line-height: 1.8;
+}
+
+button:hover {
+    background: #ff8fb9;
+}
+
+button:active {
+    transform: translate(3px, 3px);
+    box-shadow: 1px 1px 0 #7b426e;
+}
+
+.hidden {
+    display: none;
+}
+
+#letterText {
+    white-space: pre-line;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation: none !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="stars"></div>
+
+<main class="game">
+    <h1>♡ VALENTINE'S QUEST ♡</h1>
+
+    <div class="moon">☾</div>
+
+    <div class="cat-scene">
+
+        <div class="cat pink">
+            <div class="tail"></div>
+            <div class="cat-body"></div>
+            <div class="cat-head">
+                <div class="ear left"></div>
+                <div class="ear right"></div>
+                <div class="eye left"></div>
+                <div class="eye right"></div>
+                <div class="nose"></div>
+                <div class="cheek left"></div>
+                <div class="cheek right"></div>
+            </div>
+        </div>
+
+        <div class="love-heart">♡</div>
+
+        <div class="cat cream">
+            <div class="tail"></div>
+            <div class="cat-body"></div>
+            <div class="cat-head">
+                <div class="ear left"></div>
+                <div class="ear right"></div>
+                <div class="eye left"></div>
+                <div class="eye right"></div>
+                <div class="nose"></div>
+                <div class="cheek left"></div>
+                <div class="cheek right"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="dialogue">
+        <p id="message">
+            Somewhere among a million stars...
+            I found someone special. ♡
+        </p>
+    </div>
+
+    <div id="startButtons">
+        <button onclick="startQuest()">START QUEST ▶</button>
+    </div>
+
+    <div id="questionButtons" class="hidden">
+        <button onclick="sayYes()">YES ♡</button>
+        <button onclick="sayNo()">NO :(</button>
+    </div>
+
+    <div id="rewardButtons" class="hidden">
+        <button onclick="openLetter()">OPEN LETTER 💌</button>
+    </div>
+
+    <div id="restartButtons" class="hidden">
+        <button onclick="restart()">PLAY AGAIN ↻</button>
+    </div>
+
+</main>
+
+<script>
+// Create twinkling stars
+const stars = document.getElementById("stars");
+
+for (let i = 0; i < 85; i++) {
+    const star = document.createElement("div");
+    star.className = "star";
+
+    star.style.left = Math.random() * 100 + "%";
+    star.style.top = Math.random() * 100 + "%";
+    star.style.animationDelay = Math.random() * 3 + "s";
+
+    stars.appendChild(star);
+}
+
+// Get the dialogue box
+const message = document.getElementById("message");
+
+let noCount = 0;
+
+// Hide all button groups
+function hideButtons() {
+    document.getElementById("startButtons").classList.add("hidden");
+    document.getElementById("questionButtons").classList.add("hidden");
+    document.getElementById("rewardButtons").classList.add("hidden");
+    document.getElementById("restartButtons").classList.add("hidden");
+}
+
+// Start the game
+function startQuest() {
+    message.textContent = "Will you be my Valentine? ♡";
+
+    hideButtons();
+    document.getElementById("questionButtons").classList.remove("hidden");
+}
+
+// No button responses
+function sayNo() {
+    const responses = [
+        "Are you sureeee? 🥺",
+        "Even for a little pixel kitty? 🐱",
+        "I'll give you all the stars! ✨",
+        "Pretty please? ♡",
+        "My little pixel heart is breaking 💔"
+    ];
+
+    message.textContent = responses[noCount % responses.length];
+    noCount++;
+}
+
+// Yes button
+function sayYes() {
+    message.textContent =
+        "QUEST COMPLETE! ♡ You made my little heart so happy!";
+
+    hideButtons();
+    document.getElementById("rewardButtons").classList.remove("hidden");
+
+    // Create celebratory hearts
+    for (let i = 0; i < 25; i++) {
+        setTimeout(function() {
+            const heart = document.createElement("div");
+            heart.className = "star";
+            heart.textContent = "💗";
+            heart.style.background = "transparent";
+            heart.style.fontSize = "20px";
+            heart.style.left = Math.random() * 100 + "%";
+            heart.style.top = Math.random() * 100 + "%";
+
+            stars.appendChild(heart);
+
+            setTimeout(function() {
+                heart.remove();
+            }, 4000);
+        }, i * 100);
+    }
+}
+
+// Open the secret letter
+function openLetter() {
+    message.textContent =
+        "Among countless stars, I'm grateful our paths crossed. " +
+        "Every little moment with you feels like its own constellation. " +
+        "Happy Valentine's Day! ♡";
+
+    hideButtons();
+    document.getElementById("restartButtons").classList.remove("hidden");
+}
+
+// Restart the game
+function restart() {
+    noCount = 0;
+
+    message.textContent =
+        "Somewhere among a million stars... I found someone special. ♡";
+
+    hideButtons();
+    document.getElementById("startButtons").classList.remove("hidden");
+}
+</script>
+
+</body>
+</html>
