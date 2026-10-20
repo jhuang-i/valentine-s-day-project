@@ -343,12 +343,13 @@ function hideButtons() {
     document.getElementById("restartButtons").classList.add("hidden");
 }
 
-// Start the game
-function startQuest() {
-    message.textContent = "Will you be my Valentine? ♡";
 
-    hideButtons();
-    document.getElementById("questionButtons").classList.remove("hidden");
+function startQuest() {
+    // Save that the player started the adventure
+    sessionStorage.removeItem("valentineQuestComplete");
+
+    // Open the cat minigame
+    window.location.href = "adventure.html";
 }
 
 // No button responses
