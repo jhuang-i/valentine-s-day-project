@@ -9,13 +9,10 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
     margin: 0;
-    min-height: 100vh;
     min-height: 100dvh;
     background: linear-gradient(#17132f, #49346e, #8b65a5);
     color: #ffe4f1;
@@ -23,7 +20,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow-x: hidden;
     text-align: center;
     padding: 18px;
 }
@@ -37,9 +33,9 @@ body {
 
 .star {
     position: absolute;
-    background: #ffe4a8;
     width: 3px;
     height: 3px;
+    background: #ffe4a8;
     box-shadow: 0 0 8px #fff0bb;
     animation: twinkle 2s infinite alternate;
 }
@@ -53,16 +49,16 @@ body {
     position: relative;
     z-index: 2;
     width: 100%;
-    max-width: 650px;
-    padding: 25px 18px;
+    max-width: 750px;
+    padding: 22px 16px;
     border: 4px solid #ff8fb9;
-    background: rgba(23, 19, 47, 0.92);
+    background: rgba(23, 19, 47, 0.95);
     box-shadow: 8px 8px 0 #a989db;
 }
 
 h1 {
     color: #ff9bc5;
-    font-size: clamp(13px, 3vw, 19px);
+    font-size: clamp(13px, 3vw, 20px);
     line-height: 2;
 }
 
@@ -73,8 +69,9 @@ p {
 
 .moon {
     font-size: 55px;
+    color: #ffe4a8;
     filter: drop-shadow(0 0 15px #ffe4a8);
-    animation: float 3s ease-in-out infinite;
+    animation: float 3s infinite;
 }
 
 @keyframes float {
@@ -83,16 +80,15 @@ p {
 
 .cat-scene {
     position: relative;
-    height: 190px;
-    margin: 15px auto;
+    height: 170px;
     display: flex;
     justify-content: center;
     align-items: flex-end;
     gap: 25px;
     border-bottom: 12px solid #554071;
+    margin: 20px auto;
 }
 
-/* Pixel-art cats made with CSS */
 .cat {
     position: relative;
     width: 85px;
@@ -112,7 +108,7 @@ p {
     height: 65px;
     background: var(--fur);
     border: 4px solid #292039;
-    border-radius: 8px 8px 3px 3px;
+    border-radius: 8px;
 }
 
 .cat-head {
@@ -165,7 +161,6 @@ p {
     width: 13px;
     height: 6px;
     background: #ff9bc5;
-    opacity: 0.8;
 }
 
 .cheek.left { left: 8px; }
@@ -180,8 +175,7 @@ p {
     border: 10px solid var(--fur);
     border-left: none;
     border-radius: 0 25px 25px 0;
-    transform-origin: bottom left;
-    animation: wag 2s ease-in-out infinite alternate;
+    animation: wag 2s infinite alternate;
 }
 
 @keyframes wag {
@@ -196,7 +190,6 @@ p {
     top: 0;
     font-size: 35px;
     color: #ff8fb9;
-    filter: drop-shadow(0 0 10px #ff8fb9);
     animation: float 2s infinite;
 }
 
@@ -218,25 +211,50 @@ button {
     background: #e76c9e;
     border: 3px solid #ffb6d2;
     box-shadow: 4px 4px 0 #7b426e;
-    line-height: 1.8;
 }
 
-button:hover {
-    background: #ff8fb9;
+button:hover { background: #ff8fb9; }
+
+.hidden { display: none !important; }
+
+/* Adventure */
+
+.hud {
+    display: flex;
+    justify-content: space-between;
+    color: #ffb6d2;
+    font-size: 10px;
+    margin: 15px 0;
 }
 
-button:active {
-    transform: translate(3px, 3px);
-    box-shadow: 1px 1px 0 #7b426e;
+#world {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    border: 4px solid #a989db;
+    background: #39325b;
+    image-rendering: pixelated;
 }
 
-.hidden {
-    display: none;
+.controls {
+    display: grid;
+    grid-template-columns: repeat(3, 55px);
+    justify-content: center;
+    gap: 5px;
+    margin: 15px auto;
 }
 
-#letterText {
-    white-space: pre-line;
+.controls button {
+    height: 50px;
+    margin: 0;
+    padding: 0;
+    touch-action: none;
 }
+
+.empty { visibility: hidden; }
+
+#message { white-space: pre-line; }
 
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
@@ -251,12 +269,15 @@ button:active {
 <div id="stars"></div>
 
 <main class="game">
-    <h1>♡ VALENTINE'S QUEST ♡</h1>
+
+<h1>♡ VALENTINE'S QUEST ♡</h1>
+
+<!-- Welcome screen -->
+<section id="welcome">
 
     <div class="moon">☾</div>
 
     <div class="cat-scene">
-
         <div class="cat pink">
             <div class="tail"></div>
             <div class="cat-body"></div>
@@ -286,21 +307,89 @@ button:active {
                 <div class="cheek right"></div>
             </div>
         </div>
+    </div>
 
+    <div class="dialogue">
+        <p>Somewhere among a million stars...<br>
+        I found someone special. ♡</p>
+    </div>
+
+    <button onclick="startQuest()">START QUEST ▶</button>
+</section>
+
+<!-- Adventure screen -->
+<section id="adventure" class="hidden">
+
+    <div class="hud">
+        <span>MOONLIT MEADOW</span>
+        <span>💗 <span id="score">0</span> / 5</span>
+    </div>
+
+    <canvas id="world" width="640" height="400"></canvas>
+
+    <div class="dialogue">
+        <p id="adventureMessage">
+            Collect five hearts beneath the stars... ♡
+        </p>
+    </div>
+
+    <div class="controls">
+        <span class="empty"></span>
+        <button data-dir="up">▲</button>
+        <span class="empty"></span>
+
+        <button data-dir="left">◀</button>
+        <button data-dir="down">▼</button>
+        <button data-dir="right">▶</button>
+    </div>
+
+    <p>Use WASD, arrow keys, or the buttons!</p>
+</section>
+
+<!-- Valentine's ending -->
+<section id="ending" class="hidden">
+
+    <div class="moon">☾</div>
+
+    <div class="cat-scene">
+        <div class="cat pink">
+            <div class="tail"></div>
+            <div class="cat-body"></div>
+            <div class="cat-head">
+                <div class="ear left"></div>
+                <div class="ear right"></div>
+                <div class="eye left"></div>
+                <div class="eye right"></div>
+                <div class="nose"></div>
+                <div class="cheek left"></div>
+                <div class="cheek right"></div>
+            </div>
+        </div>
+
+        <div class="love-heart">♡</div>
+
+        <div class="cat cream">
+            <div class="tail"></div>
+            <div class="cat-body"></div>
+            <div class="cat-head">
+                <div class="ear left"></div>
+                <div class="ear right"></div>
+                <div class="eye left"></div>
+                <div class="eye right"></div>
+                <div class="nose"></div>
+                <div class="cheek left"></div>
+                <div class="cheek right"></div>
+            </div>
+        </div>
     </div>
 
     <div class="dialogue">
         <p id="message">
-            Somewhere among a million stars...
-            I found someone special. ♡
+            Will you be my Valentine? ♡
         </p>
     </div>
 
-    <div id="startButtons">
-        <button onclick="startQuest()">START QUEST ▶</button>
-    </div>
-
-    <div id="questionButtons" class="hidden">
+    <div id="questionButtons">
         <button onclick="sayYes()">YES ♡</button>
         <button onclick="sayNo()">NO :(</button>
     </div>
@@ -313,46 +402,288 @@ button:active {
         <button onclick="restart()">PLAY AGAIN ↻</button>
     </div>
 
+</section>
+
 </main>
 
 <script>
-// Create twinkling stars
+// Stars
 const stars = document.getElementById("stars");
 
 for (let i = 0; i < 85; i++) {
     const star = document.createElement("div");
     star.className = "star";
-
     star.style.left = Math.random() * 100 + "%";
     star.style.top = Math.random() * 100 + "%";
     star.style.animationDelay = Math.random() * 3 + "s";
-
     stars.appendChild(star);
 }
 
-// Get the dialogue box
+// Game setup
+const canvas = document.getElementById("world");
+const ctx = canvas.getContext("2d");
+
 const message = document.getElementById("message");
+const adventureMessage = document.getElementById("adventureMessage");
 
+let player = { x: 60, y: 310 };
+let hearts = [];
+let score = 0;
+let playing = false;
 let noCount = 0;
+let lastTime = 0;
 
-// Hide all button groups
-function hideButtons() {
-    document.getElementById("startButtons").classList.add("hidden");
-    document.getElementById("questionButtons").classList.add("hidden");
-    document.getElementById("rewardButtons").classList.add("hidden");
-    document.getElementById("restartButtons").classList.add("hidden");
-}
+const keys = new Set();
 
+const heartPositions = [
+    [110, 90],
+    [260, 130],
+    [420, 80],
+    [190, 290],
+    [480, 310]
+];
+
+const otherCat = { x: 570, y: 110 };
+
+const heartMessages = [
+    "One little heart, one little wish... ♡",
+    "Every path feels brighter with you in it. ✨",
+    "Even the moon is cheering for you. ☾",
+    "Some constellations are made of moments. 💗",
+    "All five hearts! Find the other kitty! 🐈"
+];
 
 function startQuest() {
-    // Save that the player started the adventure
-    sessionStorage.removeItem("valentineQuestComplete");
+    document.getElementById("welcome").classList.add("hidden");
+    document.getElementById("ending").classList.add("hidden");
+    document.getElementById("adventure").classList.remove("hidden");
 
-    // Open the cat minigame
-    window.location.href = "adventure.html";
+    player = { x: 60, y: 310 };
+    score = 0;
+    playing = true;
+    keys.clear();
+
+    hearts = heartPositions.map(function(pos) {
+        return {
+            x: pos[0],
+            y: pos[1],
+            collected: false
+        };
+    });
+
+    document.getElementById("score").textContent = "0";
+    adventureMessage.textContent =
+        "Collect five hearts beneath the stars... ♡";
 }
 
-// No button responses
+function drawCat(x, y, fur) {
+    ctx.fillStyle = "#292039";
+    ctx.fillRect(x - 17, y - 25, 34, 30);
+
+    ctx.fillStyle = fur;
+    ctx.fillRect(x - 14, y - 22, 28, 24);
+
+    // Ears
+    ctx.fillRect(x - 13, y - 30, 9, 10);
+    ctx.fillRect(x + 4, y - 30, 9, 10);
+
+    // Eyes
+    ctx.fillStyle = "#292039";
+    ctx.fillRect(x - 8, y - 14, 4, 6);
+    ctx.fillRect(x + 5, y - 14, 4, 6);
+
+    // Nose
+    ctx.fillStyle = "#ff8fb9";
+    ctx.fillRect(x - 2, y - 8, 4, 3);
+
+    // Body
+    ctx.fillStyle = fur;
+    ctx.fillRect(x - 10, y + 5, 20, 12);
+}
+
+function drawHeart(x, y) {
+    ctx.fillStyle = "#ff9bc5";
+
+    ctx.fillRect(x - 12, y - 8, 9, 9);
+    ctx.fillRect(x + 3, y - 8, 9, 9);
+    ctx.fillRect(x - 15, y, 30, 10);
+    ctx.fillRect(x - 10, y + 10, 20, 6);
+    ctx.fillRect(x - 5, y + 16, 10, 5);
+}
+
+function drawWorld() {
+    ctx.fillStyle = "#39325b";
+    ctx.fillRect(0, 0, 640, 400);
+
+    // Moonlit path
+    ctx.fillStyle = "#55416c";
+    ctx.fillRect(30, 280, 550, 50);
+    ctx.fillRect(450, 90, 70, 240);
+
+    // Decorative flowers
+    for (let i = 0; i < 35; i++) {
+        const x = (i * 173 + 29) % 600 + 20;
+        const y = (i * 97 + 37) % 350 + 25;
+
+        ctx.fillStyle = "#a989db";
+        ctx.fillRect(x, y, 5, 5);
+
+        ctx.fillStyle = "#ff9bc5";
+        ctx.fillRect(x + 4, y + 2, 3, 3);
+    }
+
+    // Trees
+    const trees = [
+        [35, 35], [194, 36], [340, 34],
+        [545, 58], [70, 203], [338, 315]
+    ];
+
+    trees.forEach(function(tree) {
+        ctx.fillStyle = "#38253f";
+        ctx.fillRect(tree[0] - 5, tree[1], 10, 30);
+
+        ctx.fillStyle = "#554477";
+        ctx.fillRect(tree[0] - 20, tree[1] - 20, 40, 30);
+    });
+
+    // Hearts
+    hearts.forEach(function(heart) {
+        if (!heart.collected) {
+            drawHeart(heart.x, heart.y);
+        }
+    });
+
+    // Second cat
+    drawCat(otherCat.x, otherCat.y, "#ffe2ae");
+
+    // Player cat
+    drawCat(player.x, player.y, "#f7afc9");
+}
+
+function distance(a, b) {
+    return Math.hypot(a.x - b.x, a.y - b.y);
+}
+
+function update(dt) {
+    if (!playing) return;
+
+    let dx = 0;
+    let dy = 0;
+
+    if (keys.has("left")) dx--;
+    if (keys.has("right")) dx++;
+    if (keys.has("up")) dy--;
+    if (keys.has("down")) dy++;
+
+    const length = Math.hypot(dx, dy);
+
+    if (length > 0) {
+        const speed = 155;
+
+        player.x += (dx / length) * speed * dt;
+        player.y += (dy / length) * speed * dt;
+    }
+
+    player.x = Math.max(17, Math.min(623, player.x));
+    player.y = Math.max(30, Math.min(383, player.y));
+
+    hearts.forEach(function(heart) {
+        if (!heart.collected && distance(player, heart) < 29) {
+            heart.collected = true;
+            score++;
+
+            document.getElementById("score").textContent = score;
+            adventureMessage.textContent = heartMessages[score - 1];
+        }
+    });
+
+    if (score === 5 && distance(player, otherCat) < 43) {
+        finishAdventure();
+    }
+}
+
+function finishAdventure() {
+    playing = false;
+    keys.clear();
+
+    document.getElementById("adventure").classList.add("hidden");
+    document.getElementById("ending").classList.remove("hidden");
+
+    message.textContent =
+        "You found your way to me beneath a million stars... ♡ " +
+        "Will you be my Valentine?";
+}
+
+function gameLoop(timestamp) {
+    const dt = Math.min((timestamp - lastTime) / 1000 || 0, 0.04);
+    lastTime = timestamp;
+
+    update(dt);
+
+    if (playing) {
+        drawWorld();
+    }
+
+    requestAnimationFrame(gameLoop);
+}
+
+requestAnimationFrame(gameLoop);
+
+// Keyboard controls
+const keyMap = {
+    arrowup: "up",
+    w: "up",
+    arrowdown: "down",
+    s: "down",
+    arrowleft: "left",
+    a: "left",
+    arrowright: "right",
+    d: "right"
+};
+
+document.addEventListener("keydown", function(event) {
+    if (!playing) return;
+
+    const direction = keyMap[event.key.toLowerCase()];
+
+    if (direction) {
+        event.preventDefault();
+        keys.add(direction);
+    }
+});
+
+document.addEventListener("keyup", function(event) {
+    const direction = keyMap[event.key.toLowerCase()];
+
+    if (direction) {
+        keys.delete(direction);
+    }
+});
+
+window.addEventListener("blur", function() {
+    keys.clear();
+});
+
+// Mobile controls
+document.querySelectorAll("[data-dir]").forEach(function(button) {
+    const direction = button.dataset.dir;
+
+    button.addEventListener("pointerdown", function(event) {
+        event.preventDefault();
+        button.setPointerCapture(event.pointerId);
+        keys.add(direction);
+    });
+
+    button.addEventListener("pointerup", function() {
+        keys.delete(direction);
+    });
+
+    button.addEventListener("pointercancel", function() {
+        keys.delete(direction);
+    });
+});
+
+// Valentine's question
 function sayNo() {
     const responses = [
         "Are you sureeee? 🥺",
@@ -366,15 +697,13 @@ function sayNo() {
     noCount++;
 }
 
-// Yes button
 function sayYes() {
     message.textContent =
         "QUEST COMPLETE! ♡ You made my little heart so happy!";
 
-    hideButtons();
+    document.getElementById("questionButtons").classList.add("hidden");
     document.getElementById("rewardButtons").classList.remove("hidden");
 
-    // Create celebratory hearts
     for (let i = 0; i < 25; i++) {
         setTimeout(function() {
             const heart = document.createElement("div");
@@ -394,47 +723,28 @@ function sayYes() {
     }
 }
 
-// Open the secret letter
 function openLetter() {
     message.textContent =
         "Among countless stars, I'm grateful our paths crossed. " +
         "Every little moment with you feels like its own constellation. " +
         "Happy Valentine's Day! ♡";
 
-    hideButtons();
+    document.getElementById("rewardButtons").classList.add("hidden");
     document.getElementById("restartButtons").classList.remove("hidden");
 }
 
-// Restart the game
 function restart() {
     noCount = 0;
 
-    message.textContent =
-        "Somewhere among a million stars... I found someone special. ♡";
+    document.getElementById("ending").classList.add("hidden");
+    document.getElementById("welcome").classList.remove("hidden");
 
-    hideButtons();
-    document.getElementById("startButtons").classList.remove("hidden");
+    document.getElementById("questionButtons").classList.remove("hidden");
+    document.getElementById("rewardButtons").classList.add("hidden");
+    document.getElementById("restartButtons").classList.add("hidden");
 }
-
-
-// Check whether the player finished the cat adventure
-if (sessionStorage.getItem("valentineQuestComplete") === "yes") {
-
-    // Clear the completion status
-    sessionStorage.removeItem("valentineQuestComplete");
-
-    // Show the Valentine's question
-    message.textContent =
-        "You found your way to me beneath a million stars... ♡ " +
-        "Will you be my Valentine?";
-
-    hideButtons();
-
-    document.getElementById("questionButtons")
-        .classList.remove("hidden");
-}
-
 </script>
 
 </body>
 </html>
+
