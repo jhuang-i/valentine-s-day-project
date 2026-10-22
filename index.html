@@ -3,1504 +3,1062 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine's Quest 🌙💗</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Valentine's Quest ♡</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-:root {
-  --pink: #ff9bc5;
-  --lavender: #b99aef;
-  --cream: #ffe4f1;
+*{box-sizing:border-box}
+body{
+ margin:0;min-height:100dvh;padding:12px;
+ background:linear-gradient(#15132e,#49356e,#8661a0);
+ color:#fff0f7;font-family:'Press Start 2P',monospace;
+ display:grid;place-items:center;text-align:center
 }
-
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  min-height: 100dvh;
-  padding: 20px 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(#17132f, #49346e, #8b65a5);
-  color: var(--cream);
-  font-family: 'Press Start 2P', monospace;
-  text-align: center;
+main{
+ width:min(100%,760px);background:#17132ff2;
+ border:4px solid #ff9bc5;box-shadow:7px 7px #9b7bc7;
+ padding:14px;position:relative
 }
-
-#stars {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
+h1{color:#ff9bc5;font-size:clamp(12px,2.6vw,20px);line-height:1.8}
+p{font-size:10px;line-height:2.3}
+button{
+ font:inherit;font-size:9px;line-height:1.7;
+ padding:11px 13px;margin:5px;background:#e36e9f;
+ color:white;border:3px solid #ffb9d6;
+ cursor:pointer;touch-action:none
 }
-
-.star {
-  position: absolute;
-  width: 3px;
-  height: 3px;
-  background: #ffe4a8;
-  box-shadow: 0 0 8px #fff0bb;
-  animation: twinkle 2s infinite alternate;
+button:focus-visible{outline:3px solid #ffe5a8}
+.hidden{display:none!important}
+.dialogue{
+ border:3px solid #a989db;background:#2c2348;
+ padding:12px;margin:12px 0;min-height:65px
 }
-
-@keyframes twinkle {
-  from { opacity: .2; }
-  to { opacity: 1; }
+#game{
+ width:100%;max-width:640px;aspect-ratio:16/10;
+ image-rendering:pixelated;border:3px solid #bca3eb;
+ background:#39325b;touch-action:none;display:block;margin:auto
 }
-
-.shell {
-  position: relative;
-  z-index: 1;
-  width: min(100%, 760px);
-  background: #17132ff0;
-  border: 4px solid #ff8fb9;
-  box-shadow: 8px 8px 0 #a989db;
-  padding: clamp(12px, 3vw, 25px);
+.map-frame{position:relative;width:100%;max-width:640px;margin:auto}
+.region-banner{
+ position:absolute;top:18%;left:50%;
+ transform:translate(-50%,-10px);width:min(90%,450px);
+ padding:17px 12px;background:#211a3de9;
+ border:3px solid #ffc0dc;box-shadow:4px 4px 0 #78588c;
+ color:#ffe8f4;pointer-events:none;opacity:0;
+ transition:opacity .2s,transform .2s;z-index:2
 }
-
-h1 {
-  color: var(--pink);
-  font-size: clamp(13px, 2.7vw, 21px);
-  line-height: 1.9;
-  margin: 5px 0 15px;
+.region-banner.visible{opacity:1;transform:translate(-50%,0)}
+.region-banner strong{
+ display:block;font-size:clamp(9px,2vw,13px);
+ line-height:1.8;color:#ffd3e5
 }
-
-p {
-  font-size: 10px;
-  line-height: 2.3;
+.region-banner small{
+ display:block;font-size:8px;line-height:2;
+ margin-top:8px;color:#e5d5f3
 }
-
-button {
-  font: inherit;
-  font-size: 10px;
-  line-height: 1.8;
-  background: #e76c9e;
-  color: white;
-  border: 3px solid #ffb6d2;
-  padding: 12px 14px;
-  margin: 5px;
-  box-shadow: 3px 3px 0 #7b426e;
-  cursor: pointer;
-  touch-action: manipulation;
+.hud{
+ display:flex;justify-content:space-between;gap:8px;
+ font-size:8px;line-height:2;margin:9px 0;flex-wrap:wrap
 }
-
-button:hover { background: #ff8fb9; }
-
-button:active { transform: translate(2px, 2px); }
-
-.hidden { display: none !important; }
-
-.moon {
-  font-size: 55px;
-  color: #ffe4a8;
-  filter: drop-shadow(0 0 15px #ffe4a8);
-  animation: float 3s ease-in-out infinite;
+.dpad{
+ display:grid;grid-template-columns:repeat(3,52px);
+ justify-content:center;gap:4px;margin:8px auto
 }
-
-@keyframes float {
-  50% { transform: translateY(-8px); }
+.dpad button{margin:0;padding:0;height:46px}
+.blank{visibility:hidden}
+.small{font-size:8px;color:#d6c4e6}
+.cat-scene{
+ position:relative;height:180px;margin:16px auto;
+ display:flex;align-items:flex-end;justify-content:center;
+ gap:25px;border-bottom:12px solid #554071
 }
-
-/* Large cats on title and ending screens */
-.cat-scene {
-  position: relative;
-  height: 180px;
-  margin: 16px auto;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 25px;
-  border-bottom: 12px solid #554071;
+.cat{
+ position:relative;width:85px;height:105px;
+ animation:breathe 2s infinite alternate
 }
-
-.cat {
-  position: relative;
-  width: 85px;
-  height: 105px;
-  animation: breathe 2s infinite alternate;
+@keyframes breathe{to{transform:translateY(-4px)}}
+.cat-body{
+ position:absolute;bottom:0;left:12px;
+ width:62px;height:65px;background:var(--fur);
+ border:4px solid #292039;border-radius:8px 8px 3px 3px
 }
-
-@keyframes breathe {
-  to { transform: translateY(-4px); }
+.cat-head{
+ position:absolute;top:0;left:2px;
+ width:82px;height:65px;background:var(--fur);
+ border:4px solid #292039;border-radius:5px;z-index:2
 }
-
-.cat-body {
-  position: absolute;
-  bottom: 0;
-  left: 12px;
-  width: 62px;
-  height: 65px;
-  background: var(--fur);
-  border: 4px solid #292039;
-  border-radius: 8px 8px 3px 3px;
+.ear{
+ position:absolute;top:-19px;width:25px;height:25px;
+ background:var(--fur);border:4px solid #292039
 }
-
-.cat-head {
-  position: absolute;
-  top: 0;
-  left: 2px;
-  width: 82px;
-  height: 65px;
-  background: var(--fur);
-  border: 4px solid #292039;
-  border-radius: 5px;
-  z-index: 2;
+.ear.left{left:5px}
+.ear.right{right:5px}
+.eye{
+ position:absolute;top:27px;width:7px;height:9px;
+ background:#292039
 }
-
-.ear {
-  position: absolute;
-  top: -19px;
-  width: 25px;
-  height: 25px;
-  background: var(--fur);
-  border: 4px solid #292039;
+.eye.left{left:19px}
+.eye.right{right:19px}
+.nose{
+ position:absolute;top:39px;left:34px;
+ width:8px;height:5px;background:#ff8fb9
 }
-
-.ear.left { left: 5px; }
-.ear.right { right: 5px; }
-
-.eye {
-  position: absolute;
-  top: 27px;
-  width: 7px;
-  height: 9px;
-  background: #292039;
+.cheek{
+ position:absolute;top:40px;width:13px;height:6px;
+ background:#ff9bc5;opacity:.8
 }
-
-.eye.left { left: 19px; }
-.eye.right { right: 19px; }
-
-.nose {
-  position: absolute;
-  top: 39px;
-  left: 34px;
-  width: 8px;
-  height: 5px;
-  background: #ff8fb9;
+.cheek.left{left:8px}
+.cheek.right{right:8px}
+.tail{
+ position:absolute;bottom:9px;right:-13px;
+ width:25px;height:45px;border:10px solid var(--fur);
+ border-left:none;border-radius:0 25px 25px 0;
+ animation:wag 2s ease-in-out infinite alternate;
+ transform-origin:bottom left
 }
-
-.cheek {
-  position: absolute;
-  top: 40px;
-  width: 13px;
-  height: 6px;
-  background: #ff9bc5;
-  opacity: .8;
+@keyframes wag{to{transform:rotate(12deg)}}
+.cat.pink{--fur:#f7afc9}
+.cat.cream{--fur:#ffe2ae}
+.love-heart{
+ position:absolute;top:0;font-size:35px;
+ color:#ff8fb9;filter:drop-shadow(0 0 10px #ff8fb9)
 }
-
-.cheek.left { left: 8px; }
-.cheek.right { right: 8px; }
-
-.tail {
-  position: absolute;
-  bottom: 9px;
-  right: -13px;
-  width: 25px;
-  height: 45px;
-  border: 10px solid var(--fur);
-  border-left: none;
-  border-radius: 0 25px 25px 0;
-  animation: wag 2s ease-in-out infinite alternate;
-  transform-origin: bottom left;
-}
-
-@keyframes wag {
-  to { transform: rotate(12deg); }
-}
-
-/* One cream cat, one pink cat */
-.cat.cream { --fur: #ffe2ae; }
-.cat.pink { --fur: #f7afc9; }
-
-.love-heart {
-  position: absolute;
-  top: 0;
-  font-size: 35px;
-  color: #ff8fb9;
-  filter: drop-shadow(0 0 10px #ff8fb9);
-  animation: float 2s infinite;
-}
-
-.dialogue {
-  border: 3px solid #a989db;
-  background: #292044;
-  padding: 13px;
-  min-height: 90px;
-  margin: 15px 0;
-}
-
-#message {
-  margin: 0;
-  white-space: pre-line;
-}
-
-.hud {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-  color: #ffbad8;
-  font-size: 9px;
-  line-height: 1.8;
-  margin: 10px 0;
-}
-
-#world {
-  display: block;
-  width: 100%;
-  max-width: 640px;
-  height: auto;
-  aspect-ratio: 16 / 10;
-  margin: auto;
-  border: 4px solid #b99aef;
-  image-rendering: pixelated;
-  background: #302c53;
-  touch-action: none;
-}
-
-.dpad {
-  display: grid;
-  grid-template-columns: repeat(3, 55px);
-  justify-content: center;
-  gap: 5px;
-  margin: 10px auto;
-}
-
-.dpad button {
-  height: 48px;
-  margin: 0;
-  padding: 0;
-  touch-action: none;
-  user-select: none;
-}
-
-.dpad .blank { visibility: hidden; }
-
-.hint {
-  font-size: 8px;
-  color: #d7bfe8;
-}
-
-#toast { min-height: 55px; }
-
-#endScreen .cat-scene { margin-top: 22px; }
-
-#endScreen.yes .cat-scene { gap: 0; }
-
-#endScreen.yes .love-heart { font-size: 48px; }
-
-@media (max-width: 420px) {
-  .shell { padding: 12px 9px; }
-  .hud { font-size: 7px; }
-  button { font-size: 9px; }
-  .cat-scene { transform: scale(.9); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation: none !important;
-  }
+#letter{white-space:pre-wrap}
+#musicBtn{background:#59446f;border-color:#ac94ce}
+@media(max-width:430px){
+ main{padding:8px}
+ .hud{font-size:7px}
+ button{font-size:8px}
 }
 </style>
 </head>
-
 <body>
-<div id="stars" aria-hidden="true"></div>
+<main>
+<h1>♡ VALENTINE'S QUEST ♡</h1>
 
-<main class="shell">
-  <h1>♡ VALENTINE'S QUEST ♡</h1>
+<section id="welcome">
+ <div class="cat-scene" aria-hidden="true">
+  <div class="cat cream">
+   <div class="tail"></div><div class="cat-body"></div>
+   <div class="cat-head">
+    <div class="ear left"></div><div class="ear right"></div>
+    <div class="eye left"></div><div class="eye right"></div>
+    <div class="nose"></div>
+    <div class="cheek left"></div><div class="cheek right"></div>
+   </div>
+  </div>
+  <div class="love-heart">♡</div>
+  <div class="cat pink">
+   <div class="tail"></div><div class="cat-body"></div>
+   <div class="cat-head">
+    <div class="ear left"></div><div class="ear right"></div>
+    <div class="eye left"></div><div class="eye right"></div>
+    <div class="nose"></div>
+    <div class="cheek left"></div><div class="cheek right"></div>
+   </div>
+  </div>
+ </div>
+ <div class="dialogue">
+  <p>Somewhere among a million stars... I found someone special. ♡</p>
+ </div>
+ <p class="small">A tiny journey through a kingdom made of love.</p>
+ <button id="start">START QUEST ▶</button>
+</section>
 
-  <!-- TITLE SCREEN -->
-  <section id="titleScreen">
-    <div class="moon">☾</div>
+<section id="adventure" class="hidden">
+ <div class="hud">
+  <span>☾ MOONLIT KINGDOM</span>
+  <span>💗 <b id="heartCount">0</b>/5 &nbsp; 🌷 <b id="flowerCount">0</b>/5</span>
+ </div>
+ <div class="map-frame">
+  <canvas id="game" width="640" height="400"></canvas>
+  <div id="regionBanner" class="region-banner" role="status">
+   <strong id="regionName"></strong>
+   <small id="regionSubtitle"></small>
+  </div>
+ </div>
+ <div class="dialogue"><p id="story">
+  Collect five hearts and five flowers. Find the pink cat in the rose garden. ♡
+ </p></div>
+ <button id="interact">TALK / READ (E)</button>
+ <button id="musicBtn">♫ MUSIC: OFF</button>
+ <div class="dpad">
+  <span class="blank"></span>
+  <button data-move="up">▲</button>
+  <span class="blank"></span>
+  <button data-move="left">◀</button>
+  <button data-move="down">▼</button>
+  <button data-move="right">▶</button>
+ </div>
+ <p class="small">WASD / ARROWS TO WALK · E TO INTERACT · TOUCH BUTTONS ON MOBILE</p>
+</section>
 
-    <div class="cat-scene">
-      <div class="cat cream">
-        <div class="tail"></div>
-        <div class="cat-body"></div>
-        <div class="cat-head">
-          <div class="ear left"></div>
-          <div class="ear right"></div>
-          <div class="eye left"></div>
-          <div class="eye right"></div>
-          <div class="nose"></div>
-          <div class="cheek left"></div>
-          <div class="cheek right"></div>
-        </div>
-      </div>
-
-      <div class="love-heart">♡</div>
-
-      <div class="cat pink">
-        <div class="tail"></div>
-        <div class="cat-body"></div>
-        <div class="cat-head">
-          <div class="ear left"></div>
-          <div class="ear right"></div>
-          <div class="eye left"></div>
-          <div class="eye right"></div>
-          <div class="nose"></div>
-          <div class="cheek left"></div>
-          <div class="cheek right"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="dialogue">
-      <p>
-        Somewhere among a million stars...
-        I found someone special. ♡
-      </p>
-    </div>
-
-    <button id="startBtn">START QUEST ▶</button>
-  </section>
-
-  <!-- ADVENTURE -->
-  <section id="adventureScreen" class="hidden">
-    <div class="hud">
-      <span>☾ MOONLIT KINGDOM</span>
-      <span>💗 <span id="score">0</span> / 5</span>
-    </div>
-
-    <canvas
-      id="world"
-      width="640"
-      height="400"
-      aria-label="Valentine's Quest game map">
-    </canvas>
-
-    <div class="dialogue">
-      <p id="toast">
-        Collect five glowing hearts.
-        The pink kitty is waiting beneath the moon... ♡
-      </p>
-    </div>
-
-    <div class="dpad">
-      <span class="blank"></span>
-      <button data-dir="up">▲</button>
-      <span class="blank"></span>
-
-      <button data-dir="left">◀</button>
-      <button data-dir="down">▼</button>
-      <button data-dir="right">▶</button>
-    </div>
-
-    <p class="hint">
-      WASD / ARROWS / TOUCH BUTTONS
-    </p>
-
-    <p class="hint">
-      EXPLORE THE KINGDOM · CROSS THE BRIDGE · FIND THE GOLDEN STAR ✦
-    </p>
-  </section>
-
-  <!-- VALENTINE ENDING -->
-  <section id="endScreen" class="hidden">
-    <div class="moon">☾</div>
-
-    <div class="cat-scene">
-      <div class="cat cream">
-        <div class="tail"></div>
-        <div class="cat-body"></div>
-        <div class="cat-head">
-          <div class="ear left"></div>
-          <div class="ear right"></div>
-          <div class="eye left"></div>
-          <div class="eye right"></div>
-          <div class="nose"></div>
-          <div class="cheek left"></div>
-          <div class="cheek right"></div>
-        </div>
-      </div>
-
-      <div class="love-heart">♡</div>
-
-      <div class="cat pink">
-        <div class="tail"></div>
-        <div class="cat-body"></div>
-        <div class="cat-head">
-          <div class="ear left"></div>
-          <div class="ear right"></div>
-          <div class="eye left"></div>
-          <div class="eye right"></div>
-          <div class="nose"></div>
-          <div class="cheek left"></div>
-          <div class="cheek right"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="dialogue">
-      <p id="message">
-        Will you be my Valentine? ♡
-      </p>
-    </div>
-
-    <div id="questionButtons">
-      <button id="yesBtn">YES ♡</button>
-      <button id="noBtn">NO :(</button>
-    </div>
-
-    <div id="rewardButtons" class="hidden">
-      <button id="letterBtn">OPEN LETTER 💌</button>
-    </div>
-
-    <div id="restartButtons" class="hidden">
-      <button id="restartBtn">PLAY AGAIN ↻</button>
-    </div>
-  </section>
+<section id="ending" class="hidden">
+ <div class="cat-scene" aria-hidden="true">
+  <div class="cat cream">
+   <div class="tail"></div><div class="cat-body"></div>
+   <div class="cat-head">
+    <div class="ear left"></div><div class="ear right"></div>
+    <div class="eye left"></div><div class="eye right"></div>
+    <div class="nose"></div>
+    <div class="cheek left"></div><div class="cheek right"></div>
+   </div>
+  </div>
+  <div class="love-heart">♡</div>
+  <div class="cat pink">
+   <div class="tail"></div><div class="cat-body"></div>
+   <div class="cat-head">
+    <div class="ear left"></div><div class="ear right"></div>
+    <div class="eye left"></div><div class="eye right"></div>
+    <div class="nose"></div>
+    <div class="cheek left"></div><div class="cheek right"></div>
+   </div>
+  </div>
+ </div>
+ <div class="dialogue">
+  <p id="endingText">
+   You found your way to me beneath a million stars... ♡ Will you be my Valentine?
+  </p>
+ </div>
+ <div id="choices">
+  <button id="yes">YES ♡</button>
+  <button id="no">NO :(</button>
+ </div>
+ <div id="letterButtons" class="hidden">
+  <button id="openLetter">OPEN LETTER 💌</button>
+ </div>
+ <div id="replayButtons" class="hidden">
+  <button id="replay">PLAY AGAIN ↻</button>
+ </div>
+ <p id="letter" class="small"></p>
+</section>
 </main>
 
 <script>
 "use strict";
 
-// ========================================
-// SETUP
-// ========================================
-
 const $ = id => document.getElementById(id);
+const c = $("game");
+const g = c.getContext("2d");
+const CW = 640, CH = 400, MW = 2400, MH = 1700;
+const cream = "#ffe2ae", pink = "#f7afc9";
 
-const canvas = $("world");
-const ctx = canvas.getContext("2d");
+let currentRegion = null, regionBannerUntil = 0;
+let player = {x:130,y:1490};
+let camera = {x:0,y:0};
+let phase = "welcome", clock = 0, last = 0;
+let hearts = 0, flowers = 0, secret = false, saidNo = 0;
+const held = new Set(), sparkles = [];
 
-const W = canvas.width;
-const H = canvas.height;
+const heartItems = [
+ [370,1400],[700,1030],[1160,680],[1730,1040],[2080,430]
+].map(([x,y]) => ({x,y,got:false}));
 
-// The map is much bigger than the screen.
-const MAP_W = 1600;
-const MAP_H = 1100;
+const flowerItems = [
+ [500,1510],[745,1030],[1330,900],[1770,610],[2150,240]
+].map(([x,y]) => ({x,y,got:false}));
 
-let cameraX = 0;
-let cameraY = 0;
-
-const screens = [
-  "titleScreen",
-  "adventureScreen",
-  "endScreen"
+const villagers = [
+ {x:425,y:1330,name:"Bunny",text:"The flowers glow brightest when someone is loved. ♡"},
+ {x:980,y:1060,name:"Fox",text:"Follow the lanterns. Every heart has a story."},
+ {x:1490,y:510,name:"Bear",text:"A secret star rests beside the waterfall! ✦"},
+ {x:1990,y:690,name:"Squirrel",text:"The rose garden waits in the northeast. 🌹"}
 ];
 
-function showScreen(id) {
-  screens.forEach(screen => {
-    $(screen).classList.toggle(
-      "hidden",
-      screen !== id
-    );
-  });
+const notes = [
+ {x:270,y:1270,text:"Love note: I would choose your company in every lifetime. ♡"},
+ {x:1070,y:820,text:"Love note: The smallest moments become my favorite memories."},
+ {x:1850,y:360,text:"Love note: Even the stars could not outshine your kindness."}
+];
+
+const destination = {x:2220,y:190};
+const star = {x:1600,y:350};
+const lake = {x:840,y:1110,w:590,h:390};
+const bridge = {x:1075,y:1080,w:92,h:460};
+
+const trees = Array.from({length:160},(_,i)=>({
+ x:50+(i*317+37)%2280,
+ y:50+(i*223+91)%1600
+}));
+
+const blossoms = Array.from({length:360},(_,i)=>({
+ x:25+(i*173+17)%2350,
+ y:20+(i*197+49)%1660,
+ k:i%4
+}));
+
+const cottages = [
+ {x:250,y:1250},{x:540,y:1270},{x:320,y:1570}
+];
+
+const rocks = [
+ {x:780,y:880},{x:1280,y:920},{x:1580,y:780},
+ {x:1720,y:350},{x:480,y:930},{x:1780,y:1190},
+ {x:670,y:350}
+];
+
+const logs = [
+ {x:580,y:740,w:84,h:19},
+ {x:1440,y:970,w:95,h:19},
+ {x:1910,y:970,w:100,h:19}
+];
+
+const gardenFences = [
+ {x:1850,y:90,w:510,h:9},
+ {x:1850,y:560,w:510,h:9},
+ {x:1850,y:90,w:9,h:190},
+ {x:1850,y:360,w:9,h:209},
+ {x:2350,y:90,w:9,h:479}
+];
+
+const route = [
+ [130,1490],[450,1390],[720,1010],[1100,1020],
+ [1120,700],[1530,650],[1800,650],[2120,400],[2220,190]
+];
+
+function distance(a,b){
+ return Math.hypot(a.x-b.x,a.y-b.y);
 }
 
-// ========================================
-// BACKGROUND STARS
-// ========================================
-
-const stars = $("stars");
-
-for (let i = 0; i < 85; i++) {
-  const star = document.createElement("div");
-
-  star.className = "star";
-  star.style.left = Math.random() * 100 + "%";
-  star.style.top = Math.random() * 100 + "%";
-  star.style.animationDelay = Math.random() * 3 + "s";
-
-  stars.appendChild(star);
+function distanceToSegment(px,py,a,b){
+ const vx=b[0]-a[0],vy=b[1]-a[1];
+ const t=Math.max(0,Math.min(1,
+  ((px-a[0])*vx+(py-a[1])*vy)/(vx*vx+vy*vy)
+ ));
+ return Math.hypot(px-(a[0]+t*vx),py-(a[1]+t*vy));
 }
 
-// ========================================
-// GAME DATA
-// ========================================
-
-const start = { x: 100, y: 930 };
-
-let player = { ...start };
-
-let hearts = [];
-let collected = 0;
-let phase = "title";
-let time = 0;
-let lastTime = 0;
-let secretFound = false;
-let noCount = 0;
-
-const keys = new Set();
-const particles = [];
-
-const heartMessages = [
-  "One little heart, one little wish... ♡",
-  "Every path feels brighter with you in it. ✨",
-  "Even the moon is cheering for you. ☾",
-  "Some constellations are made of moments. 💗",
-  "All five hearts! Find the pink cat beneath the moon. 🐈"
-];
-
-// Five hearts spread across the kingdom.
-const heartSpots = [
-  [310, 850],
-  [550, 580],
-  [880, 320],
-  [1190, 800],
-  [1380, 260]
-];
-
-// Trees throughout the kingdom.
-const treeSpots = Array.from(
-  { length: 64 },
-  (_, i) => [
-    55 + (i * 239 + 73) % 1490,
-    55 + (i * 173 + 47) % 980
-  ]
-).filter(([x, y]) => {
-  return !(x > 1160 && x < 1550 &&
-           y > 70 && y < 380);
+const solidTrees = trees.filter(t=>{
+ if(t.x>1800&&t.y<620)return false;
+ if(t.x>lake.x-45&&t.x<lake.x+lake.w+45&&
+    t.y>lake.y-45&&t.y<lake.y+lake.h+45)return false;
+ if(route.some((p,i)=>i<route.length-1&&
+    distanceToSegment(t.x,t.y,p,route[i+1])<65))return false;
+ if([...heartItems,...flowerItems,...villagers,...notes,destination,star]
+    .some(o=>distance(t,o)<70))return false;
+ if(cottages.some(h=>Math.abs(t.x-h.x)<90&&
+    Math.abs(t.y-h.y)<105))return false;
+ return true;
 });
 
-// Hundreds of little flowers.
-const flowerSpots = Array.from(
-  { length: 230 },
-  (_, i) => ({
-    x: 30 + (i * 173 + 29) % 1530,
-    y: 35 + (i * 197 + 37) % 1020
-  })
-);
+function touchesBox(x,y,r,b){
+ const nx=Math.max(b.x,Math.min(x,b.x+b.w));
+ const ny=Math.max(b.y,Math.min(y,b.y+b.h));
+ return Math.hypot(x-nx,y-ny)<r;
+}
 
-// Pink cat waiting in the moon garden.
-const catTarget = {
-  x: 1460,
-  y: 170
+function pondCollision(x,y){
+ return x>lake.x+8&&x<lake.x+lake.w-8&&
+ y>lake.y+8&&y<lake.y+lake.h-8&&
+ !(x>bridge.x&&x<bridge.x+bridge.w);
+}
+
+function blocked(x,y){
+ const radius=11;
+ if(pondCollision(x,y))return true;
+ if(cottages.some(h=>touchesBox(x,y,radius,
+  {x:h.x-47,y:h.y-57,w:94,h:107})))return true;
+ if(rocks.some(r=>touchesBox(x,y,radius,
+  {x:r.x-22,y:r.y-15,w:44,h:28})))return true;
+ if(logs.some(l=>touchesBox(x,y,radius,l)))return true;
+ if(gardenFences.some(f=>touchesBox(x,y,radius,f)))return true;
+ if([
+  {x:2190,y:169},{x:2280,y:344},{x:1990,y:259}
+ ].some(t=>Math.hypot(x-t.x,y-t.y)<34))return true;
+ if(solidTrees.some(t=>
+  Math.hypot(x-t.x,y-(t.y+24))<24+radius
+ ))return true;
+ return false;
+}
+
+const fireflies=Array.from({length:55},(_,i)=>({
+ x:(i*193+31)%MW,y:(i*281+43)%MH,p:i*2.1
+}));
+
+function show(id){
+ ["welcome","adventure","ending"].forEach(v=>
+  $(v).classList.toggle("hidden",v!==id)
+ );
+}
+
+function say(text){
+ $("story").textContent=text;
+}
+
+const regionInfo={
+ village:{
+  name:"♡ VALENTINE'S VILLAGE ♡",
+  subtitle:"A little village where every lantern glows with love."
+ },
+ lake:{
+  name:"✧ STARLIT LAKE ✧",
+  subtitle:"The water sparkles beneath the moon."
+ },
+ forest:{
+  name:"✦ ENCHANTED FOREST ✦",
+  subtitle:"Follow the fireflies through the lavender trees."
+ },
+ garden:{
+  name:"🌹 ROSE GARDEN 🌹",
+  subtitle:"Someone special is waiting among the blossoms."
+ },
+ meadow:{
+  name:"☾ MOONLIT MEADOW ☾",
+  subtitle:"Every path is part of your story."
+ }
 };
 
-// Secret golden star.
-const secret = {
-  x: 1000,
-  y: 930
-};
-
-// Pond and bridge.
-const pond = {
-  x: 620,
-  y: 630,
-  w: 430,
-  h: 260
-};
-
-const bridge = {
-  x: 802,
-  y: 610,
-  w: 70,
-  h: 310
-};
-
-// Prevent walking through the pond,
-// except across the bridge.
-function insidePond(x, y) {
-  const inWater =
-    x > pond.x + 8 &&
-    x < pond.x + pond.w - 8 &&
-    y > pond.y + 8 &&
-    y < pond.y + pond.h - 8;
-
-  const onBridge =
-    x > bridge.x &&
-    x < bridge.x + bridge.w;
-
-  return inWater && !onBridge;
+function getRegion(x,y){
+ if(x>=1800&&y<620)return "garden";
+ if(x>=730&&x<1500&&y>=970)return "lake";
+ if(x<770&&y>=1080)return "village";
+ if(x>=650&&x<1800&&y<970)return "forest";
+ return "meadow";
 }
 
-// ========================================
-// RESET AND START
-// ========================================
-
-function resetGame() {
-  player = { ...start };
-
-  collected = 0;
-  secretFound = false;
-  noCount = 0;
-
-  particles.length = 0;
-  keys.clear();
-
-  hearts = heartSpots.map(([x, y]) => ({
-    x: x,
-    y: y,
-    found: false
-  }));
-
-  $("score").textContent = "0";
-
-  $("toast").textContent =
-    "Collect five glowing hearts. " +
-    "The pink kitty is waiting beneath the moon... ♡";
-
-  $("message").textContent =
-    "You found your way to me beneath a million stars... ♡ " +
-    "Will you be my Valentine?";
-
-  $("endScreen").classList.remove("yes");
-
-  $("questionButtons").classList.remove("hidden");
-  $("rewardButtons").classList.add("hidden");
-  $("restartButtons").classList.add("hidden");
+function announceRegion(force=false){
+ const next=getRegion(player.x,player.y);
+ if(!force&&next===currentRegion)return;
+ currentRegion=next;
+ const info=regionInfo[next];
+ $("regionName").textContent=info.name;
+ $("regionSubtitle").textContent=info.subtitle;
+ $("regionBanner").classList.add("visible");
+ regionBannerUntil=clock+1.6;
 }
 
-function begin() {
-  resetGame();
-  phase = "adventure";
-  showScreen("adventureScreen");
+function box(x,y,w,h,color){
+ g.fillStyle=color;
+ g.fillRect(Math.round(x),Math.round(y),w,h);
 }
 
-// ========================================
-// SPARKLES
-// ========================================
-
-function sparkle(x, y, amount = 14) {
-  for (let i = 0; i < amount; i++) {
-    const angle = Math.random() * Math.PI * 2;
-    const speed = 25 + Math.random() * 65;
-
-    particles.push({
-      x: x,
-      y: y,
-      vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed,
-      life: .7 + Math.random() * .4
-    });
-  }
+function pop(x,y,n=15){
+ for(let i=0;i<n;i++){
+  const a=Math.random()*Math.PI*2;
+  sparkles.push({
+   x,y,vx:Math.cos(a)*70,vy:Math.sin(a)*70,t:1
+  });
+ }
 }
 
-function dist(a, b) {
-  return Math.hypot(a.x - b.x, a.y - b.y);
+function reset(){
+ player={x:130,y:1490};
+ currentRegion=null;regionBannerUntil=0;
+ hearts=0;flowers=0;secret=false;saidNo=0;
+ held.clear();sparkles.length=0;
+ heartItems.forEach(v=>v.got=false);
+ flowerItems.forEach(v=>v.got=false);
+ $("heartCount").textContent="0";
+ $("flowerCount").textContent="0";
+ say("Collect five hearts and five flowers. Find the pink cat in the rose garden. ♡");
+ $("endingText").textContent=
+  "You found your way to me beneath a million stars... ♡ Will you be my Valentine?";
+ $("choices").classList.remove("hidden");
+ $("letterButtons").classList.add("hidden");
+ $("replayButtons").classList.add("hidden");
+ $("letter").textContent="";
 }
 
-// ========================================
-// PLAYER MOVEMENT AND COLLECTION
-// ========================================
-
-function update(dt) {
-  if (phase !== "adventure") return;
-
-  let dx = 0;
-  let dy = 0;
-
-  if (keys.has("left")) dx--;
-  if (keys.has("right")) dx++;
-  if (keys.has("up")) dy--;
-  if (keys.has("down")) dy++;
-
-  if (dx || dy) {
-    const length = Math.hypot(dx, dy);
-    const speed = 155;
-
-    const nx = Math.max(
-      23,
-      Math.min(
-        MAP_W - 23,
-        player.x + dx / length * speed * dt
-      )
-    );
-
-    const ny = Math.max(
-      36,
-      Math.min(
-        MAP_H - 22,
-        player.y + dy / length * speed * dt
-      )
-    );
-
-    if (!insidePond(nx, player.y)) {
-      player.x = nx;
-    }
-
-    if (!insidePond(player.x, ny)) {
-      player.y = ny;
-    }
-  }
-
-  // Collect glowing hearts.
-  for (const heart of hearts) {
-    if (!heart.found && dist(player, heart) < 29) {
-      heart.found = true;
-      collected++;
-
-      $("score").textContent = collected;
-      $("toast").textContent =
-        heartMessages[collected - 1];
-
-      sparkle(heart.x, heart.y);
-    }
-  }
-
-  // Find the secret golden star.
-  if (!secretFound && dist(player, secret) < 26) {
-    secretFound = true;
-
-    sparkle(secret.x, secret.y, 25);
-
-    $("toast").textContent =
-      "✦ Secret found! Even across a thousand skies, " +
-      "I'd find my way to you. ✦";
-  }
-
-  // Meet the pink cat after finding all hearts.
-  if (
-    collected === 5 &&
-    dist(player, catTarget) < 43
-  ) {
-    phase = "ending";
-    keys.clear();
-
-    showScreen("endScreen");
-    celebrate();
-  }
-
-  // Animate particles.
-  for (let i = particles.length - 1; i >= 0; i--) {
-    const p = particles[i];
-
-    p.x += p.vx * dt;
-    p.y += p.vy * dt;
-    p.life -= dt;
-
-    if (p.life <= 0) {
-      particles.splice(i, 1);
-    }
-  }
+function nearInteract(){
+ let closest=null,limit=76;
+ for(const obj of [...villagers,...notes]){
+  const d=distance(player,obj);
+  if(d<limit){closest=obj;limit=d;}
+ }
+ if(closest){
+  say(closest.text);
+  pop(closest.x,closest.y,8);
+ }else{
+  say("There's nothing to read nearby. Explore the little cottages and glowing notes! ♡");
+ }
 }
 
-// ========================================
-// PIXEL ART DRAWING HELPERS
-// ========================================
+function update(dt){
+ if(phase!=="adventure")return;
+ let dx=Number(held.has("right"))-Number(held.has("left"));
+ let dy=Number(held.has("down"))-Number(held.has("up"));
+ if(dx||dy){
+  let len=Math.hypot(dx,dy),speed=195;
+  let nx=Math.max(28,Math.min(MW-28,
+   player.x+dx/len*speed*dt));
+  let ny=Math.max(38,Math.min(MH-23,
+   player.y+dy/len*speed*dt));
+  if(!blocked(nx,player.y))player.x=nx;
+  if(!blocked(player.x,ny))player.y=ny;
+ }
+ announceRegion();
+ if(clock>=regionBannerUntil)
+  $("regionBanner").classList.remove("visible");
 
-function rect(x, y, w, h, color) {
-  ctx.fillStyle = color;
-
-  ctx.fillRect(
-    Math.round(x),
-    Math.round(y),
-    w,
-    h
-  );
+ const heartLines=[
+  "One little heart, one little wish... ♡",
+  "Your laughter is a constellation of its own. ✨",
+  "The moon remembers every lovely moment. ☾",
+  "Every road leads me a little closer to you. ♡",
+  "All five hearts! Now gather your bouquet. 💗"
+ ];
+ for(const h of heartItems){
+  if(!h.got&&distance(player,h)<36){
+   h.got=true;hearts++;
+   $("heartCount").textContent=hearts;
+   say(heartLines[hearts-1]);pop(h.x,h.y);
+  }
+ }
+ for(const f of flowerItems){
+  if(!f.got&&distance(player,f)<34){
+   f.got=true;flowers++;
+   $("flowerCount").textContent=flowers;
+   say(flowers===5?
+    "Your bouquet is complete! Find the pink kitty. 🌷":
+    "A flower for the one waiting beneath the stars. 🌷");
+   pop(f.x,f.y);
+  }
+ }
+ if(!secret&&distance(player,star)<36){
+  secret=true;
+  say("✦ Secret star! Across a thousand skies, I'd still find you. ✦");
+  pop(star.x,star.y,35);
+ }
+ if(distance(player,destination)<60){
+  if(hearts===5&&flowers===5){
+   phase="ending";held.clear();show("ending");
+  }else if(Math.floor(clock*2)%3===0){
+   say("The pink kitty is waiting! Collect all five hearts and five flowers first. ♡");
+  }
+ }
+ for(let i=sparkles.length-1;i>=0;i--){
+  let p=sparkles[i];
+  p.x+=p.vx*dt;p.y+=p.vy*dt;p.t-=dt;
+  if(p.t<=0)sparkles.splice(i,1);
+ }
 }
 
-// Purple trees.
-function drawTree(x, y) {
-  rect(x - 5, y + 8, 10, 24, "#38253f");
-
-  rect(x - 24, y - 13, 48, 31, "#362d5a");
-  rect(x - 17, y - 25, 34, 23, "#554477");
-  rect(x - 10, y - 30, 20, 14, "#77609c");
-
-  rect(x + 9, y - 16, 4, 4, "#b899d8");
+function cat(x,y,fur,walking=false){
+ const pale=fur===cream;
+ const shade=pale?"#d8ae7c":"#d77eaa";
+ const light=pale?"#fff0d3":"#ffd6e7";
+ const blush=pale?"#ed9c9d":"#ed78a8";
+ const bob=walking?Math.sin(clock*14)*2:Math.sin(clock*2)*.7;
+ const step=walking?Math.round(Math.sin(clock*14)*3):0;
+ const wag=Math.round(Math.sin(clock*6)*3);
+ g.save();
+ g.translate(Math.round(x),Math.round(y+bob));
+ box(14+wag,-9,8,7,shade);
+ box(20+wag,-15,8,11,fur);
+ box(22+wag,-20,7,8,shade);
+ box(-15,-11,30,27,"#292039");
+ box(-12,-9,24,24,fur);
+ box(-10,1,20,11,light);
+ box(-12,12+step,10,6,shade);
+ box(3,12-step,10,6,shade);
+ box(-17,-30,12,15,"#292039");
+ box(5,-30,12,15,"#292039");
+ box(-14,-28,8,13,fur);
+ box(6,-28,8,13,fur);
+ box(-11,-25,4,7,blush);
+ box(8,-25,4,7,blush);
+ box(-19,-21,38,24,"#292039");
+ box(-17,-23,34,25,fur);
+ box(-20,-12,6,10,fur);
+ box(14,-12,6,10,fur);
+ box(-16,-22,12,4,light);
+ if(Math.sin(clock*.8+(pale?0:2))>.996){
+  box(-11,-11,7,2,"#292039");
+  box(4,-11,7,2,"#292039");
+ }else{
+  box(-11,-15,7,9,"#292039");
+  box(4,-15,7,9,"#292039");
+  box(-9,-14,2,3,"white");
+  box(6,-14,2,3,"white");
+ }
+ box(-16,-6,7,4,blush);
+ box(9,-6,7,4,blush);
+ box(-2,-6,4,3,"#d96d90");
+ box(-4,-2,3,2,"#6c4557");
+ box(1,-2,3,2,"#6c4557");
+ box(-23,-7,6,1,"#fff0e7");
+ box(17,-7,6,1,"#fff0e7");
+ g.restore();
 }
 
-// ========================================
-// DETAILED PIXEL CATS
-// ========================================
-
-function drawCat(x, y, fur, walk = false) {
-  const cream = fur === "#ffe2ae";
-
-  const shade = cream ? "#d8ae7c" : "#d77eaa";
-  const light = cream ? "#fff0d3" : "#ffd6e7";
-  const blush = cream ? "#ed9c9d" : "#ed78a8";
-
-  const bob = walk
-    ? Math.sin(time * 13) * 2
-    : Math.sin(time * 2) * .7;
-
-  const blink =
-    Math.sin(time * .85 + (cream ? 0 : 2)) > .995;
-
-  ctx.save();
-
-  ctx.translate(
-    Math.round(x),
-    Math.round(y + bob)
-  );
-
-  // Animated fluffy tail.
-  const wag = Math.round(Math.sin(time * 7) * 3);
-
-  rect(14 + wag, -9, 8, 7, shade);
-  rect(20 + wag, -15, 8, 11, fur);
-  rect(22 + wag, -20, 7, 8, shade);
-  rect(24 + wag, -18, 4, 4, light);
-
-  // Body.
-  rect(-15, -11, 30, 27, "#292039");
-  rect(-12, -9, 24, 24, fur);
-  rect(-10, 1, 20, 11, light);
-
-  // Walking paws.
-  const step = walk
-    ? Math.round(Math.sin(time * 13) * 3)
-    : 0;
-
-  rect(-12, 12 + step, 10, 6, shade);
-  rect(3, 12 - step, 10, 6, shade);
-
-  rect(-10, 12 + step, 6, 4, fur);
-  rect(5, 12 - step, 6, 4, fur);
-
-  // Ears.
-  rect(-17, -30, 12, 15, "#292039");
-  rect(5, -30, 12, 15, "#292039");
-
-  rect(-14, -28, 8, 13, fur);
-  rect(6, -28, 8, 13, fur);
-
-  rect(-11, -25, 4, 7, blush);
-  rect(8, -25, 4, 7, blush);
-
-  // Fluffy head and cheeks.
-  rect(-19, -21, 38, 24, "#292039");
-  rect(-17, -23, 34, 25, fur);
-
-  rect(-20, -12, 6, 10, fur);
-  rect(14, -12, 6, 10, fur);
-
-  rect(-16, -22, 12, 4, light);
-  rect(-13, -19, 6, 3, light);
-
-  // Blinking eyes.
-  if (blink) {
-    rect(-11, -11, 7, 2, "#292039");
-    rect(4, -11, 7, 2, "#292039");
-  } else {
-    rect(-11, -15, 7, 9, "#292039");
-    rect(4, -15, 7, 9, "#292039");
-
-    rect(-9, -14, 2, 3, "#fffdf8");
-    rect(6, -14, 2, 3, "#fffdf8");
-  }
-
-  // Rosy cheeks.
-  rect(-16, -6, 7, 4, blush);
-  rect(9, -6, 7, 4, blush);
-
-  // Nose and tiny mouth.
-  rect(-2, -6, 4, 3, "#d96d90");
-
-  rect(-4, -2, 3, 2, "#6c4557");
-  rect(1, -2, 3, 2, "#6c4557");
-
-  // Whiskers.
-  rect(-23, -7, 6, 1, "#fff0e7");
-  rect(-23, -3, 6, 1, "#fff0e7");
-
-  rect(17, -7, 6, 1, "#fff0e7");
-  rect(17, -3, 6, 1, "#fff0e7");
-
-  ctx.restore();
+function pixelAnimal(x,y,type){
+ const dark="#30243c",eye="#292039",shine="#fffaf4";
+ const bounce=Math.sin(clock*2+x)*.8;
+ g.save();
+ g.translate(Math.round(x),Math.round(y+bounce));
+ let fur,light,blush;
+ if(type==="bunny"){
+  fur="#f4e7f2";light="#fff8fa";blush="#efa2c2";
+  box(-15,-33,11,25,dark);box(4,-33,11,25,dark);
+  box(-13,-31,7,23,fur);box(6,-31,7,23,fur);
+  box(-11,-27,3,15,blush);box(8,-27,3,15,blush);
+ }else if(type==="fox"){
+  fur="#df965e";light="#fff0d9";blush="#e8a3a7";
+  box(-18,-25,14,16,dark);box(4,-25,14,16,dark);
+  box(-15,-23,10,15,fur);box(5,-23,10,15,fur);
+  box(-11,-20,5,6,blush);box(6,-20,5,6,blush);
+  box(14,-8,14,11,fur);box(22,-5,8,7,light);
+ }else if(type==="bear"){
+  fur="#ba8a70";light="#ebc4a7";blush="#e8a0a4";
+  box(-18,-24,13,13,dark);box(5,-24,13,13,dark);
+  box(-15,-21,8,8,fur);box(7,-21,8,8,fur);
+ }else{
+  fur="#c99a72";light="#f6d7b6";blush="#e8a0a4";
+  box(12,-17,12,19,dark);box(15,-20,13,17,fur);
+  box(19,-17,5,7,light);
+  box(-17,-24,12,14,dark);box(5,-24,12,14,dark);
+  box(-14,-22,8,11,fur);box(7,-22,8,11,fur);
+ }
+ box(-15,-9,30,27,dark);
+ box(-12,-7,24,22,fur);
+ box(-9,1,18,11,light);
+ box(-13,12,11,6,dark);
+ box(3,12,11,6,dark);
+ box(-11,12,7,4,fur);
+ box(5,12,7,4,fur);
+ box(-20,-18,40,24,dark);
+ box(-17,-20,34,24,fur);
+ box(-19,-8,6,10,fur);
+ box(13,-8,6,10,fur);
+ if(type==="fox"){
+  box(-15,-7,13,9,light);
+  box(2,-7,13,9,light);
+ }else{
+  box(-9,-5,18,9,light);
+ }
+ box(-11,-12,7,8,eye);
+ box(4,-12,7,8,eye);
+ box(-9,-11,2,3,shine);
+ box(6,-11,2,3,shine);
+ box(-16,-3,6,4,blush);
+ box(10,-3,6,4,blush);
+ box(-2,-5,4,3,type==="fox"?"#503748":"#b26f86");
+ box(-3,-1,2,2,eye);
+ box(1,-1,2,2,eye);
+ g.restore();
 }
 
-// ========================================
-// COLLECTIBLE HEARTS
-// ========================================
-
-function drawHeart(x, y) {
-  ctx.save();
-
-  ctx.translate(
-    x,
-    y + Math.sin(time * 3 + x) * 3
-  );
-
-  ctx.shadowBlur = 17;
-  ctx.shadowColor = "#ff81bd";
-
-  rect(-12, -8, 9, 9, "#ff9bc5");
-  rect(3, -8, 9, 9, "#ff9bc5");
-  rect(-15, -2, 30, 12, "#ff9bc5");
-  rect(-11, 10, 22, 7, "#ff9bc5");
-  rect(-7, 17, 14, 5, "#ff9bc5");
-  rect(-3, 22, 6, 4, "#ff9bc5");
-
-  rect(-7, -4, 4, 4, "#fff0f4");
-
-  ctx.restore();
+function heart(x,y){
+ g.save();
+ g.translate(x,y+Math.sin(clock*3+x)*3);
+ g.shadowBlur=15;g.shadowColor="#ff81bd";
+ box(-12,-8,9,9,"#ff9bc5");
+ box(3,-8,9,9,"#ff9bc5");
+ box(-15,-2,30,12,"#ff9bc5");
+ box(-11,10,22,7,"#ff9bc5");
+ box(-7,17,14,5,"#ff9bc5");
+ box(-3,22,6,4,"#ff9bc5");
+ box(-7,-4,4,4,"#fff0f4");
+ g.restore();
 }
 
-// ========================================
-// DETAILED FLOWERS
-// ========================================
-
-function drawFlower(f, i) {
-  const petal =
-    i % 3 === 0 ? "#ffb2d2" :
-    i % 3 === 1 ? "#c5a4ef" :
-                  "#e4b9ff";
-
-  // Stem.
-  rect(f.x, f.y + 5, 2, 10, "#6d9b86");
-
-  // Leaves.
-  rect(f.x - 4, f.y + 10, 5, 2, "#7aab8d");
-  rect(f.x + 2, f.y + 8, 5, 2, "#7aab8d");
-
-  // Petals.
-  rect(f.x - 3, f.y - 2, 8, 3, petal);
-  rect(f.x - 5, f.y + 1, 4, 6, petal);
-  rect(f.x + 3, f.y + 1, 4, 6, petal);
-  rect(f.x - 2, f.y + 6, 6, 3, petal);
-
-  // Golden center.
-  rect(f.x, f.y + 2, 3, 3, "#ffe9a6");
+function flower(x,y,k=0,large=false){
+ let color=["#ffb2d2","#c5a4ef","#e4b9ff","#f4c4a6"][k%4];
+ let s=large?2:1;
+ g.save();g.translate(x,y);g.scale(s,s);
+ box(0,4,2,13,"#6d9b86");
+ box(-5,10,5,3,"#7aab8d");
+ box(2,8,5,3,"#7aab8d");
+ box(-4,-4,10,4,color);
+ box(-7,0,5,7,color);
+ box(4,0,5,7,color);
+ box(-4,7,10,4,color);
+ box(0,1,3,4,"#ffe9a6");
+ g.restore();
 }
 
-// ========================================
-// POND AND WOODEN BRIDGE
-// ========================================
-
-function drawPond() {
-  // Stone edge.
-  rect(
-    pond.x - 14,
-    pond.y - 14,
-    pond.w + 28,
-    pond.h + 28,
-    "#64788b"
-  );
-
-  // Water.
-  rect(
-    pond.x,
-    pond.y,
-    pond.w,
-    pond.h,
-    "#315a86"
-  );
-
-  // Water reflections.
-  for (let i = 0; i < 24; i++) {
-    const x = pond.x + 18 + (i * 79) % 390;
-    const y = pond.y + 18 + (i * 61) % 225;
-
-    rect(
-      x, y, 18, 3,
-      i % 2 ? "#5688a5" : "#477b9d"
-    );
-  }
-
-  // Lily pads.
-  for (let i = 0; i < 9; i++) {
-    const x = pond.x + 35 + (i * 103) % 355;
-    const y = pond.y + 38 + (i * 71) % 185;
-
-    rect(x, y, 22, 12, "#619780");
-    rect(x + 14, y, 8, 5, "#315a86");
-
-    if (i % 3 === 0) {
-      rect(x + 8, y - 6, 6, 7, "#f9a7ca");
-      rect(x + 6, y - 3, 10, 4, "#f9c0d9");
-    }
-  }
-
-  // Wooden bridge.
-  rect(
-    bridge.x - 5,
-    bridge.y,
-    bridge.w + 10,
-    bridge.h,
-    "#62455e"
-  );
-
-  rect(
-    bridge.x,
-    bridge.y,
-    bridge.w,
-    bridge.h,
-    "#ba8a83"
-  );
-
-  // Wooden planks.
-  for (
-    let y = bridge.y + 10;
-    y < bridge.y + bridge.h;
-    y += 23
-  ) {
-    rect(
-      bridge.x + 4,
-      y,
-      bridge.w - 8,
-      4,
-      "#8c606c"
-    );
-  }
-
-  // Bridge rails.
-  rect(
-    bridge.x - 9,
-    bridge.y,
-    9,
-    bridge.h,
-    "#e4b2a0"
-  );
-
-  rect(
-    bridge.x + bridge.w,
-    bridge.y,
-    9,
-    bridge.h,
-    "#e4b2a0"
-  );
+function tree(x,y,rose=false){
+ box(x-6,y+9,12,36,"#62455e");
+ const dark=rose?"#934c84":"#362d5a";
+ const mid=rose?"#e58caf":"#554477";
+ const top=rose?"#ffc4dc":"#8066a4";
+ box(x-32,y-10,64,35,dark);
+ box(x-25,y-31,50,35,mid);
+ box(x-15,y-43,30,20,top);
+ box(x+10,y-19,6,5,rose?"#fff0e6":"#b899d8");
 }
 
-// ========================================
-// WOODEN SIGNS
-// ========================================
-
-function drawSign(x, y, label) {
-  rect(x - 3, y, 6, 27, "#8d6172");
-  rect(x - 43, y - 25, 86, 28, "#cfa2a3");
-  rect(x - 39, y - 21, 78, 20, "#604969");
-
-  ctx.fillStyle = "#fff1d3";
-  ctx.font = "10px monospace";
-  ctx.textAlign = "center";
-
-  ctx.fillText(label, x, y - 7);
+function cottage(x,y,k=0){
+ box(x-47,y-30,94,80,"#e0b2bf");
+ box(x-53,y-40,106,22,k%2?"#806493":"#a36992");
+ box(x-36,y-57,72,22,k%2?"#9b7eaf":"#bc84a9");
+ box(x-15,y+11,30,39,"#76556c");
+ box(x-8,y+25,5,6,"#ffe4a8");
+ box(x-34,y-4,18,20,"#ffedb1");
+ box(x+16,y-4,18,20,"#ffedb1");
+ box(x-34,y+5,18,3,"#8b6485");
+ box(x+16,y+5,18,3,"#8b6485");
 }
 
-// ========================================
-// MINIMAP
-// ========================================
-
-function drawMiniMap() {
-  const mw = 116;
-  const mh = 80;
-
-  const mx = W - mw - 13;
-  const my = 12;
-
-  ctx.save();
-  ctx.globalAlpha = .92;
-
-  // Minimap border and land.
-  rect(
-    mx - 4, my - 4,
-    mw + 8, mh + 8,
-    "#201a37"
-  );
-
-  rect(mx, my, mw, mh, "#62547c");
-
-  // Pond.
-  rect(
-    mx + pond.x / MAP_W * mw,
-    my + pond.y / MAP_H * mh,
-    pond.w / MAP_W * mw,
-    pond.h / MAP_H * mh,
-    "#3b82a0"
-  );
-
-  // Hearts.
-  for (const heart of hearts) {
-    if (!heart.found) {
-      rect(
-        mx + heart.x / MAP_W * mw - 1,
-        my + heart.y / MAP_H * mh - 1,
-        3, 3,
-        "#ffb1d0"
-      );
-    }
-  }
-
-  // Pink cat.
-  rect(
-    mx + catTarget.x / MAP_W * mw - 2,
-    my + catTarget.y / MAP_H * mh - 2,
-    5, 5,
-    "#ff84b8"
-  );
-
-  // Cream player cat.
-  rect(
-    mx + player.x / MAP_W * mw - 2,
-    my + player.y / MAP_H * mh - 2,
-    5, 5,
-    "#ffe2ae"
-  );
-
-  ctx.restore();
+function drawRock(r){
+ box(r.x-23,r.y-5,46,19,"#39364d");
+ box(r.x-19,r.y-15,37,24,"#8e8aa0");
+ box(r.x-12,r.y-18,24,9,"#b7aec1");
+ box(r.x-15,r.y-7,8,4,"#d6cad3");
 }
 
-// ========================================
-// DRAW THE BIG WORLD
-// ========================================
-
-function draw() {
-  // Camera follows the cream cat.
-  cameraX = Math.max(
-    0,
-    Math.min(MAP_W - W, player.x - W / 2)
-  );
-
-  cameraY = Math.max(
-    0,
-    Math.min(MAP_H - H, player.y - H / 2)
-  );
-
-  ctx.clearRect(0, 0, W, H);
-
-  ctx.save();
-
-  ctx.translate(
-    -Math.round(cameraX),
-    -Math.round(cameraY)
-  );
-
-  // Purple meadow ground.
-  rect(0, 0, MAP_W, MAP_H, "#39325b");
-
-  // Grass texture.
-  const x0 = Math.floor(cameraX / 32) * 32;
-  const y0 = Math.floor(cameraY / 32) * 32;
-
-  for (
-    let y = y0;
-    y < cameraY + H + 32;
-    y += 32
-  ) {
-    for (
-      let x = x0;
-      x < cameraX + W + 32;
-      x += 32
-    ) {
-      if ((x * 7 + y * 13) % 5 === 0) {
-        rect(
-          x + 8,
-          y + 12,
-          4, 4,
-          "#463c68"
-        );
-      }
-    }
-  }
-
-  // Winding pathways.
-  ctx.strokeStyle = "#57486e";
-  ctx.lineWidth = 66;
-  ctx.lineCap = "round";
-  ctx.lineJoin = "round";
-
-  ctx.beginPath();
-
-  ctx.moveTo(100, 930);
-  ctx.lineTo(310, 850);
-  ctx.lineTo(550, 580);
-  ctx.lineTo(840, 580);
-  ctx.lineTo(840, 960);
-  ctx.lineTo(1190, 800);
-  ctx.lineTo(1380, 600);
-  ctx.lineTo(1380, 260);
-  ctx.lineTo(1460, 170);
-
-  ctx.stroke();
-
-  // Pond and bridge.
-  drawPond();
-
-  // Flowers.
-  for (const [i, flower] of flowerSpots.entries()) {
-    if (
-      flower.x < cameraX - 20 ||
-      flower.x > cameraX + W + 20 ||
-      flower.y < cameraY - 20 ||
-      flower.y > cameraY + H + 20
-    ) {
-      continue;
-    }
-
-    if (insidePond(flower.x, flower.y)) {
-      continue;
-    }
-
-    drawFlower(flower, i);
-  }
-
-  // Trees.
-  for (const [x, y] of treeSpots) {
-    if (
-      x < cameraX - 50 ||
-      x > cameraX + W + 50 ||
-      y < cameraY - 50 ||
-      y > cameraY + H + 50
-    ) {
-      continue;
-    }
-
-    if (insidePond(x, y)) {
-      continue;
-    }
-
-    drawTree(x, y);
-  }
-
-  // Signs.
-  drawSign(350, 780, "♡ HEART TRAIL");
-  drawSign(1130, 490, "☾ MOON GARDEN");
-
-  // Glowing moon above the pink cat.
-  ctx.font = "38px serif";
-  ctx.textAlign = "center";
-  ctx.fillStyle = "#ffe7a1";
-
-  ctx.shadowBlur = 18;
-  ctx.shadowColor = "#ffe7a1";
-
-  ctx.fillText(
-    "☾",
-    catTarget.x,
-    catTarget.y - 92
-  );
-
-  ctx.shadowBlur = 0;
-
-  // Hidden golden star.
-  if (!secretFound) {
-    ctx.fillStyle = "#ffdb87";
-    ctx.font = "24px serif";
-
-    ctx.fillText(
-      "✦",
-      secret.x,
-      secret.y + Math.sin(time * 2) * 4
-    );
-  }
-
-  // Uncollected hearts.
-  for (const heart of hearts) {
-    if (!heart.found) {
-      drawHeart(heart.x, heart.y);
-    }
-  }
-
-  // Text above the pink cat.
-  ctx.fillStyle =
-    collected === 5 ? "#ffdc9c" : "#c9b1d8";
-
-  ctx.font = "11px monospace";
-
-  ctx.fillText(
-    collected === 5
-      ? "COME HERE ♡"
-      : "Collect 5 hearts",
-    catTarget.x,
-    catTarget.y - 47
-  );
-
-  // Pink cat waiting at the destination.
-  drawCat(
-    catTarget.x,
-    catTarget.y,
-    "#f7afc9"
-  );
-
-  // Cream cat controlled by player.
-  drawCat(
-    player.x,
-    player.y,
-    "#ffe2ae",
-    keys.size > 0
-  );
-
-  // Sparkles.
-  for (const p of particles) {
-    ctx.globalAlpha = Math.max(0, p.life);
-
-    rect(
-      p.x,
-      p.y,
-      5, 5,
-      "#ffe2a8"
-    );
-  }
-
-  ctx.globalAlpha = 1;
-
-  ctx.restore();
-
-  // Keep minimap fixed in screen corner.
-  drawMiniMap();
+function drawLog(l){
+ box(l.x-4,l.y+3,l.w+8,l.h,"#46354b");
+ box(l.x,l.y,l.w,l.h-3,"#956c65");
+ box(l.x+8,l.y+4,l.w-16,4,"#c39a7b");
+ box(l.x+l.w-12,l.y+3,7,12,"#e4b999");
 }
 
-// ========================================
-// GAME LOOP
-// ========================================
-
-function loop(timestamp) {
-  const dt = Math.min(
-    (timestamp - lastTime) / 1000 || 0,
-    .04
-  );
-
-  lastTime = timestamp;
-  time += dt;
-
-  update(dt);
-
-  if (phase === "adventure") {
-    draw();
-  }
-
-  requestAnimationFrame(loop);
+function lakeDraw(){
+ box(lake.x-15,lake.y-15,lake.w+30,lake.h+30,"#64788b");
+ box(lake.x,lake.y,lake.w,lake.h,"#315a86");
+ for(let i=0;i<35;i++){
+  let x=lake.x+20+(i*89)%540;
+  let y=lake.y+20+(i*61)%340;
+  box(x,y,23,3,i%2?"#5688a5":"#477b9d");
+ }
+ for(let i=0;i<12;i++){
+  let x=lake.x+35+(i*113)%520;
+  let y=lake.y+30+(i*77)%340;
+  box(x,y,23,12,"#619780");
+  box(x+16,y,7,5,"#315a86");
+  if(i%3===0)flower(x+7,y-3,0);
+ }
+ box(bridge.x-6,bridge.y,bridge.w+12,bridge.h,"#62455e");
+ box(bridge.x,bridge.y,bridge.w,bridge.h,"#ba8a83");
+ for(let y=bridge.y+8;y<bridge.y+bridge.h;y+=22)
+  box(bridge.x+4,y,bridge.w-8,4,"#8c606c");
+ box(bridge.x-10,bridge.y,9,bridge.h,"#e4b2a0");
+ box(bridge.x+bridge.w,bridge.y,9,bridge.h,"#e4b2a0");
+ for(let i=0;i<7;i++)
+  box(lake.x+lake.w-25+i*5,lake.y-18,4,80,
+   i%2?"#a8d9e4":"#75b9d2");
 }
 
+function sign(x,y,label){
+ box(x-3,y,6,29,"#8d6172");
+ box(x-55,y-26,110,26,"#cfa2a3");
+ box(x-51,y-22,102,18,"#604969");
+ g.fillStyle="#fff1d3";
+ g.font="11px monospace";
+ g.textAlign="center";
+ g.fillText(label,x,y-9);
+}
+
+function mini(){
+ let w=118,h=84,x=CW-w-12,y=12;
+ g.save();g.globalAlpha=.94;
+ box(x-4,y-4,w+8,h+8,"#201a37");
+ box(x,y,w,h,"#62547c");
+ box(x+lake.x/MW*w,y+lake.y/MH*h,
+  lake.w/MW*w,lake.h/MH*h,"#3b82a0");
+ for(const hrt of heartItems)
+  if(!hrt.got)box(x+hrt.x/MW*w,y+hrt.y/MH*h,3,3,"#ff9bc5");
+ for(const f of flowerItems)
+  if(!f.got)box(x+f.x/MW*w,y+f.y/MH*h,3,3,"#c8f0ac");
+ box(x+destination.x/MW*w,y+destination.y/MH*h,5,5,pink);
+ box(x+player.x/MW*w,y+player.y/MH*h,5,5,cream);
+ g.restore();
+}
+
+function draw(){
+ camera.x=Math.max(0,Math.min(MW-CW,player.x-CW/2));
+ camera.y=Math.max(0,Math.min(MH-CH,player.y-CH/2));
+ g.clearRect(0,0,CW,CH);
+ g.save();
+ g.translate(-Math.round(camera.x),-Math.round(camera.y));
+
+ box(0,0,MW,MH,"#39325b");
+ box(0,1050,770,650,"#514269");
+ box(650,0,1060,1020,"#39385e");
+ box(1760,0,640,610,"#614066");
+
+ // Winding paths
+ g.strokeStyle="#746080";
+ g.lineWidth=66;g.lineCap="round";g.lineJoin="round";
+ g.beginPath();
+ g.moveTo(130,1490);
+ g.lineTo(450,1390);
+ g.lineTo(720,1010);
+ g.lineTo(1100,1020);
+ g.lineTo(1120,700);
+ g.lineTo(1530,650);
+ g.lineTo(1800,650);
+ g.lineTo(2120,400);
+ g.lineTo(2220,190);
+ g.stroke();
+
+ lakeDraw();
+ box(1400,210,260,210,"#51446e");
+
+ // Rose garden fences and flowers
+ for(const f of gardenFences)
+  box(f.x,f.y,f.w,f.h,"#b58aa8");
+ for(let x=1850;x<2360;x+=35){
+  box(x,90,6,14,"#e9b5cf");
+  box(x,560,6,14,"#e9b5cf");
+ }
+ for(let y=90;y<570;y+=35){
+  if(y<280||y>360)box(1850,y,14,6,"#e9b5cf");
+  box(2350,y,14,6,"#e9b5cf");
+ }
+ for(let i=0;i<26;i++){
+  let x=1900+(i*59)%400;
+  let y=135+(i*83)%390;
+  flower(x,y,i,2===i%5);
+ }
+
+ cottages.forEach((h,i)=>cottage(h.x,h.y,i));
+
+ // Lanterns
+ for(const [x,y] of [
+  [165,1320],[630,1370],[770,970],
+  [1500,620],[2000,480]
+ ]){
+  box(x-2,y,4,32,"#a9879a");
+  box(x-7,y-10,14,15,"#ffe8aa");
+  g.save();
+  g.shadowColor="#ffe8aa";g.shadowBlur=18;
+  box(x-4,y-7,8,9,"#fff1bc");
+  g.restore();
+ }
+
+ // Trees and ground flowers
+ for(const t of solidTrees){
+  if(t.x<camera.x-60||t.x>camera.x+CW+60||
+     t.y<camera.y-60||t.y>camera.y+CH+60||
+     pondCollision(t.x,t.y))continue;
+  tree(t.x,t.y);
+ }
+ for(const f of blossoms){
+  if(f.x<camera.x-25||f.x>camera.x+CW+25||
+     f.y<camera.y-25||f.y>camera.y+CH+25||
+     pondCollision(f.x,f.y))continue;
+  flower(f.x,f.y,f.k);
+ }
+
+ tree(2190,145,true);
+ tree(2280,320,true);
+ tree(1990,235,true);
+
+ for(const r of rocks)drawRock(r);
+ for(const l of logs)drawLog(l);
+
+ sign(640,1380,"♡ VILLAGE");
+ sign(1370,790,"✦ FOREST");
+ sign(1850,710,"ROSE GARDEN");
+
+ // Fireflies
+ for(const f of fireflies){
+  if(f.x<camera.x-20||f.x>camera.x+CW+20||
+     f.y<camera.y-20||f.y>camera.y+CH+20)continue;
+  g.globalAlpha=.35+.6*(.5+.5*Math.sin(clock*2+f.p));
+  box(f.x+Math.sin(clock+f.p)*6,
+      f.y+Math.cos(clock+f.p)*5,3,3,"#ffeaa6");
+ }
+ g.globalAlpha=1;
+
+ // Falling petals
+ for(let i=0;i<35;i++){
+  let x=1860+(i*67+clock*11)%480;
+  let y=100+(i*97+clock*20)%460;
+  box(x,y,5,3,i%2?"#ffc3dd":"#e99abf");
+ }
+
+ // Collectibles
+ for(const h of heartItems)
+  if(!h.got)heart(h.x,h.y);
+ for(const f of flowerItems){
+  if(!f.got){
+   flower(f.x,f.y,0,true);
+   g.font="14px serif";
+   g.fillStyle="#ffe9a6";
+   g.fillText("✧",f.x,f.y-25);
+  }
+ }
+ if(!secret){
+  g.font="30px serif";
+  g.fillStyle="#ffdc8e";
+  g.fillText("✦",star.x,star.y+Math.sin(clock*3)*5);
+ }
+
+ // Pixel-art animals
+ for(const v of villagers){
+  pixelAnimal(v.x,v.y,v.name.toLowerCase());
+  g.fillStyle="#fff0d6";
+  g.font="11px monospace";
+  g.textAlign="center";
+  g.fillText(v.name,v.x,v.y-43);
+ }
+
+ // Hidden love notes
+ for(const n of notes){
+  box(n.x-10,n.y-15,22,19,"#ffedb9");
+  box(n.x-7,n.y-10,16,3,"#c58ba6");
+  g.fillStyle="#ffe7ae";
+  g.font="13px serif";
+  g.fillText("✧",n.x,n.y-23);
+ }
+
+ // Pink cat waiting beneath the moon
+ g.font="39px serif";
+ g.fillStyle="#ffe8a7";
+ g.textAlign="center";
+ g.fillText("☾",destination.x,destination.y-98);
+ g.font="12px monospace";
+ g.fillStyle="#ffe2f1";
+ g.fillText(
+  hearts===5&&flowers===5?
+  "I'M HERE ♡":"5 HEARTS + 5 FLOWERS",
+  destination.x,destination.y-51
+ );
+
+ cat(destination.x,destination.y,pink);
+ cat(player.x,player.y,cream,held.size>0);
+
+ for(const p of sparkles){
+  g.globalAlpha=Math.max(0,p.t);
+  box(p.x,p.y,5,5,"#ffe7a7");
+ }
+ g.globalAlpha=1;
+ g.restore();
+ mini();
+}
+
+function loop(ts){
+ let dt=Math.min((ts-last)/1000||0,.04);
+ last=ts;clock+=dt;
+ update(dt);
+ if(phase==="adventure")draw();
+ requestAnimationFrame(loop);
+}
 requestAnimationFrame(loop);
 
-// ========================================
-// KEYBOARD CONTROLS
-// ========================================
-
-const keyMap = {
-  arrowup: "up",
-  w: "up",
-  arrowdown: "down",
-  s: "down",
-  arrowleft: "left",
-  a: "left",
-  arrowright: "right",
-  d: "right"
+// Keyboard and mobile controls
+const map={
+ arrowup:"up",w:"up",
+ arrowdown:"down",s:"down",
+ arrowleft:"left",a:"left",
+ arrowright:"right",d:"right"
 };
 
-document.addEventListener("keydown", e => {
-  if (phase !== "adventure") return;
-
-  const direction = keyMap[e.key.toLowerCase()];
-
-  if (direction) {
-    e.preventDefault();
-    keys.add(direction);
-  }
+document.addEventListener("keydown",e=>{
+ if(phase!=="adventure")return;
+ let k=e.key.toLowerCase();
+ if(map[k]){
+  e.preventDefault();
+  held.add(map[k]);
+ }
+ if(k==="e"&&!e.repeat)nearInteract();
 });
 
-document.addEventListener("keyup", e => {
-  const direction = keyMap[e.key.toLowerCase()];
-
-  if (direction) {
-    keys.delete(direction);
-  }
+document.addEventListener("keyup",e=>{
+ let d=map[e.key.toLowerCase()];
+ if(d)held.delete(d);
 });
 
-window.addEventListener("blur", () => {
-  keys.clear();
+window.addEventListener("blur",()=>held.clear());
+
+document.querySelectorAll("[data-move]").forEach(b=>{
+ let dir=b.dataset.move;
+ b.addEventListener("pointerdown",e=>{
+  e.preventDefault();
+  b.setPointerCapture(e.pointerId);
+  held.add(dir);
+ });
+ for(const name of [
+  "pointerup","pointercancel","lostpointercapture"
+ ]){
+  b.addEventListener(name,()=>held.delete(dir));
+ }
 });
 
-// ========================================
-// MOBILE TOUCH CONTROLS
-// ========================================
+$("interact").onclick=nearInteract;
 
-document.querySelectorAll("[data-dir]").forEach(
-  button => {
-    const direction = button.dataset.dir;
+$("start").onclick=()=>{
+ reset();
+ phase="adventure";
+ show("adventure");
+ announceRegion(true);
+};
 
-    button.addEventListener("pointerdown", e => {
-      e.preventDefault();
+// Valentine's question
+const noReplies=[
+ "Are you sureeee? 🥺",
+ "Even for a little pixel kitty? 🐱",
+ "I'll give you all the stars! ✨",
+ "Pretty please? ♡",
+ "My little pixel heart is breaking 💔"
+];
 
-      button.setPointerCapture(e.pointerId);
-      keys.add(direction);
-    });
+$("no").onclick=()=>{
+ $("endingText").textContent=
+  noReplies[saidNo++%noReplies.length];
+};
 
-    for (const event of [
-      "pointerup",
-      "pointercancel",
-      "lostpointercapture"
-    ]) {
-      button.addEventListener(event, () => {
-        keys.delete(direction);
-      });
-    }
-  }
-);
+$("yes").onclick=()=>{
+ $("choices").classList.add("hidden");
+ $("letterButtons").classList.remove("hidden");
+ $("endingText").textContent=
+  "QUEST COMPLETE! ♡ You made my little heart so happy! The cream kitty gives the pink kitty a bouquet, and they cuddle beneath the stars. 💗";
+ $("ending").querySelector(".cat-scene").style.gap="0";
+};
 
-// ========================================
-// VALENTINE CELEBRATION
-// ========================================
+$("openLetter").onclick=()=>{
+ $("endingText").textContent="A letter for you ♡";
+ $("letter").textContent=
+  "Among countless stars, I'm grateful our paths crossed. Every little moment with you feels like its own constellation. Happy Valentine's Day! ♡";
+ $("letterButtons").classList.add("hidden");
+ $("replayButtons").classList.remove("hidden");
+};
 
-function celebrate() {
-  for (let i = 0; i < 30; i++) {
-    const heart = document.createElement("div");
+$("replay").onclick=()=>{
+ phase="welcome";
+ $("ending").querySelector(".cat-scene").style.gap="25px";
+ show("welcome");
+};
 
-    heart.className = "star";
-    heart.textContent = "💗";
+// Background music
+let audio=null,musicTimer=null,musicOn=false,noteIndex=0;
+const melody=[
+ 392,440,523.25,440,349.23,392,
+ 329.63,392,440,523.25,587.33,523.25
+];
 
-    heart.style.background = "transparent";
-    heart.style.fontSize = "19px";
-    heart.style.left = Math.random() * 100 + "%";
-    heart.style.top = Math.random() * 100 + "%";
-
-    stars.appendChild(heart);
-
-    setTimeout(() => {
-      heart.remove();
-    }, 3500);
-  }
+function playNote(){
+ if(!audio||!musicOn)return;
+ let o=audio.createOscillator();
+ let gain=audio.createGain();
+ let t=audio.currentTime;
+ o.type="sine";
+ o.frequency.value=melody[noteIndex++%melody.length];
+ gain.gain.setValueAtTime(.0001,t);
+ gain.gain.exponentialRampToValueAtTime(.055,t+.035);
+ gain.gain.exponentialRampToValueAtTime(.0001,t+.4);
+ o.connect(gain);
+ gain.connect(audio.destination);
+ o.start(t);
+ o.stop(t+.43);
 }
 
-// ========================================
-// BUTTON EVENTS
-// ========================================
-
-// Start adventure.
-$("startBtn").addEventListener("click", begin);
-
-// Funny No responses.
-$("noBtn").addEventListener("click", () => {
-  const responses = [
-    "Are you sureeee? 🥺",
-    "Even for a little pixel kitty? 🐱",
-    "I'll give you all the stars! ✨",
-    "Pretty please? ♡",
-    "My little pixel heart is breaking 💔"
-  ];
-
-  $("message").textContent =
-    responses[noCount % responses.length];
-
-  noCount++;
-});
-
-// Yes celebration.
-$("yesBtn").addEventListener("click", () => {
-  $("message").textContent =
-    "QUEST COMPLETE! ♡ " +
-    "You made my little heart so happy!";
-
-  $("questionButtons").classList.add("hidden");
-  $("rewardButtons").classList.remove("hidden");
-
-  $("endScreen").classList.add("yes");
-
-  celebrate();
-});
-
-// Open romantic letter.
-$("letterBtn").addEventListener("click", () => {
-  $("message").textContent =
-    "Among countless stars, I'm grateful our paths crossed. " +
-    "Every little moment with you feels like its own constellation. " +
-    "Happy Valentine's Day! ♡";
-
-  $("rewardButtons").classList.add("hidden");
-  $("restartButtons").classList.remove("hidden");
-});
-
-// Play again.
-$("restartBtn").addEventListener("click", () => {
-  phase = "title";
-  keys.clear();
-
-  showScreen("titleScreen");
-});
+$("musicBtn").onclick=async()=>{
+ if(!musicOn){
+  try{
+   audio=audio||new (
+    window.AudioContext||window.webkitAudioContext
+   )();
+   await audio.resume();
+   musicOn=true;
+   playNote();
+   musicTimer=setInterval(playNote,500);
+   $("musicBtn").textContent="♫ MUSIC: ON";
+  }catch(e){
+   say("Music isn't available in this browser.");
+  }
+ }else{
+  musicOn=false;
+  clearInterval(musicTimer);
+  $("musicBtn").textContent="♫ MUSIC: OFF";
+ }
+};
 </script>
 </body>
 </html>
 
-
-</body>
-</html>
 
